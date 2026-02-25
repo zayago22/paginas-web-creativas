@@ -21,6 +21,7 @@ const toolComponents = {
     MetaTagGenerator: lazy(() => import('../../Components/Tools/MetaTagGenerator')),
     BoxShadowGenerator: lazy(() => import('../../Components/Tools/BoxShadowGenerator')),
     PasswordGenerator: lazy(() => import('../../Components/Tools/PasswordGenerator')),
+    WhatsAppLinkGenerator: lazy(() => import('../../Components/Tools/WhatsAppLinkGenerator')),
 };
 
 export default function ToolShow({ tool }) {
