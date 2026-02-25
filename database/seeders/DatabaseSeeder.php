@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder
     {
         // === ADMIN USER ===
         User::create([
-            'name' => 'Alex Admin',
-            'email' => 'admin@paginaswebcreativas.com',
-            'password' => Hash::make('password'), // CAMBIAR EN PRODUCCIÓN
+            'name' => 'Admin',
+            'email' => 'contacto@paginaswebcreativas.com',
+            'password' => Hash::make('Clave2230!'),
         ]);
 
         // === SERVICIOS ===
