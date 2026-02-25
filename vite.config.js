@@ -51,6 +51,14 @@ export default defineConfig({
                     if (id.includes('node_modules/qrcode')) {
                         return 'vendor-qrcode';
                     }
+                    // Image compression
+                    if (id.includes('node_modules/browser-image-compression')) {
+                        return 'vendor-imgcompression';
+                    }
+                    // ZIP / file-saver
+                    if (id.includes('node_modules/jszip') || id.includes('node_modules/file-saver')) {
+                        return 'vendor-zip';
+                    }
                     // Font source files
                     if (id.includes('node_modules/@fontsource')) {
                         return 'vendor-fonts';

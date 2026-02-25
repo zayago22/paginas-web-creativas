@@ -1,14 +1,15 @@
 ﻿/**
  * Compresor de Imágenes — React Component
  *
- * Este componente es 100% client-side. Toda la compresión
- * se hace en el navegador usando Canvas API.
+ * Compresión 100% client-side usando browser-image-compression
+ * (Web Worker, no bloquea el UI). Canvas API eliminado.
  *
  * Patrón: Cada herramienta es un componente React independiente
  * que se carga dinámicamente en Tools/Show.jsx
  */
 
 import { useState, useRef, useCallback } from 'react';
+import imageCompression from 'browser-image-compression';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
@@ -27,33 +28,32 @@ export default function ImageCompressor() {
         setResults([]);
     }, []);
 
-    const compressImage = (file, quality) => {
-        return new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.naturalWidth;
-                    canvas.height = img.naturalHeight;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0);
+    // Map slider (10–100) → imageCompression options.
+    // Low slider = aggressive compression; high slider = light compression.
+    const buildOptions = (sliderValue) => {
+        // normalise to 0–1 where 1 = max quality (slider at 100)
+        const t = (sliderValue - 10) / 90;
+        return {
+            // maxSizeMB: 0.05 MB at slider=10, 2 MB at slider=100
+            maxSizeMB: 0.05 + t * (2 - 0.05),
+            maxWidthOrHeight: 1920,
+            useWebWorker: true,
+            // initialQuality: 0.1 at slider=10, 0.9 at slider=100
+            initialQuality: 0.1 + t * 0.8,
+        };
+    };
 
-                    canvas.toBlob((blob) => {
-                        resolve({
-                            name: file.name,
-                            originalSize: file.size,
-                            compressedSize: blob.size,
-                            savings: Math.round((1 - blob.size / file.size) * 100),
-                            blob,
-                            url: URL.createObjectURL(blob),
-                        });
-                    }, 'image/jpeg', quality / 100);
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        });
+    const compressImage = async (file, sliderValue) => {
+        const options = buildOptions(sliderValue);
+        const compressedBlob = await imageCompression(file, options);
+        return {
+            name: file.name,
+            originalSize: file.size,
+            compressedSize: compressedBlob.size,
+            savings: Math.round((1 - compressedBlob.size / file.size) * 100),
+            blob: compressedBlob,
+            url: URL.createObjectURL(compressedBlob),
+        };
     };
 
     const handleCompress = async () => {
