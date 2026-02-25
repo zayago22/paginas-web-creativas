@@ -1,4 +1,181 @@
-﻿@import "tailwindcss";
+﻿/* ================================
+   FONTS — Local (fontsource, no external request)
+   ================================ */
+@import "@fontsource-variable/outfit";
+
+@import "tailwindcss";
+
+/* ================================
+   CUSTOM PROPERTIES
+   ================================ */
+:root {
+    --blue: #0090ff;
+    --cyan: #00bfff;
+    --teal: #00e4b8;
+    --violet: #7c5cfc;
+    --bg: #0c1222;
+    --bg-card: #141d2f;
+    --text: #e8edf4;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --border: rgba(255, 255, 255, 0.08);
+}
+
+/* ================================
+   BASE
+   ================================ */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Outfit Variable', 'Outfit', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+    background: rgba(0, 144, 255, 0.3);
+    color: #fff;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.2); }
+
+/* ================================
+   ANIMATIONS
+   ================================ */
+@keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-down {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(40px, -30px) scale(1.1); }
+    66% { transform: translate(-20px, 40px) scale(0.95); }
+}
+
+@keyframes float-delayed {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-30px, 20px) scale(1.05); }
+    66% { transform: translate(25px, -35px) scale(0.98); }
+}
+
+@keyframes bounce-wa {
+    0%, 100% { transform: translateY(0); }
+    10% { transform: translateY(-8px); }
+    20% { transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.8s ease both;
+}
+
+.animate-fade-in-up-delayed {
+    animation: fade-in-up 0.8s ease 0.2s both;
+}
+
+.animate-fade-in-down {
+    animation: fade-in-down 0.8s ease both;
+}
+
+.animate-float {
+    animation: float 20s infinite ease-in-out;
+}
+
+.animate-float-delayed {
+    animation: float-delayed 22s infinite ease-in-out;
+}
+
+.animate-float-slow {
+    animation: float 25s infinite ease-in-out 5s;
+}
+
+.animate-bounce-wa {
+    animation: bounce-wa 3s infinite;
+}
+
+/* ================================
+   FONT FAMILY UTILITY
+   ================================ */
+.font-outfit {
+    font-family: 'Outfit Variable', 'Outfit', sans-serif;
+}
+
+/* ================================
+   MOBILE PERFORMANCE OPTIMIZATIONS
+   ================================ */
+
+/* 3 — Blobs: lighter on mobile (not hidden, just cheaper) */
+@media (max-width: 768px) {
+    .blob,
+    [class*="blob"],
+    .blob-bg {
+        filter: blur(60px) !important;
+        opacity: 0.08 !important;
+        transform: scale(0.5) !important;
+    }
+
+    /* Inline background blobs in AppLayout */
+    .fixed.inset-0 > div[class*="rounded-full"][class*="blur"] {
+        filter: blur(60px) !important;
+        opacity: 0.08 !important;
+        width: 300px !important;
+        height: 300px !important;
+    }
+}
+
+/* 8 — Animations: faster on mobile */
+@media (max-width: 768px) {
+    .animate-fade-in-up,
+    .animate-fade-in-up-delayed,
+    .animate-fade-in-down {
+        animation-duration: 0.2s !important;
+    }
+
+    /* Float blobs: pause on mobile — saves GPU */
+    .animate-float,
+    .animate-float-delayed,
+    .animate-float-slow {
+        animation-play-state: paused !important;
+    }
+}
+
+/* Low-end device: disable non-critical animations entirely */
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Reveal component: instant on mobile */
+@media (max-width: 640px) {
+    [data-reveal] {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
+/* ================================
+   LAZY SECTION PLACEHOLDER
+   ================================ */
+.lazy-section-placeholder {
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
 /* ================================
    CUSTOM PROPERTIES

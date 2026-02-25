@@ -15,9 +15,9 @@ export default function AppLayout({ children, title }) {
         <>
             {/* Background Blobs */}
             <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-                <div className="absolute w-[600px] h-[600px] rounded-full bg-[#0090ff] blur-[120px] opacity-[0.15] -top-[10%] -left-[10%] animate-float" />
-                <div className="absolute w-[500px] h-[500px] rounded-full bg-[#00bfff] blur-[120px] opacity-[0.15] top-[30%] -right-[15%] animate-float-delayed" />
-                <div className="absolute w-[450px] h-[450px] rounded-full bg-[#7c5cfc] blur-[120px] opacity-[0.15] bottom-[10%] left-[20%] animate-float-slow" />
+                <div className="blob-bg absolute w-[600px] h-[600px] rounded-full bg-[#0090ff] blur-[120px] opacity-[0.15] -top-[10%] -left-[10%] animate-float" />
+                <div className="blob-bg absolute w-[500px] h-[500px] rounded-full bg-[#00bfff] blur-[120px] opacity-[0.15] top-[30%] -right-[15%] animate-float-delayed" />
+                <div className="blob-bg absolute w-[450px] h-[450px] rounded-full bg-[#7c5cfc] blur-[120px] opacity-[0.15] bottom-[10%] left-[20%] animate-float-slow" />
             </div>
 
             {/* Mobile Nav Overlay */}
