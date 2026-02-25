@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+
+node_modules/
+.git/
+
+storage/logs/
+storage/app/public/
+bootstrap/cache/*.php
+
+*.log
