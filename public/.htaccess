@@ -35,7 +35,9 @@
     BrowserMatch ^Mozilla/4 gzip-only-text/html
     BrowserMatch ^Mozilla/4\.0[678] no-gzip
     BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
-    Header append Vary User-Agent
+    <IfModule mod_headers.c>
+        Header append Vary User-Agent
+    </IfModule>
 </IfModule>
 
 # ── Browser Caching ───────────────────────────────────────────────────────────

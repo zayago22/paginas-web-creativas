@@ -11,8 +11,8 @@ RUN npm run build
 # ── Stage 2: PHP app ─────────────────────────────────────────────────────────
 FROM php:8.3-apache
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
+# Enable Apache modules
+RUN a2enmod rewrite headers deflate expires
 
 # Install PHP extensions
 RUN apt-get update && apt-get install -y \
