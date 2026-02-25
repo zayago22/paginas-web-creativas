@@ -29,9 +29,8 @@ export default function ToolShow({ tool }) {
 
             {/* Topbar */}
             <div className="flex items-center justify-between px-6 md:px-8 py-4 border-b border-white/[0.06] bg-[#0c1222]">
-                <Link href="/" className="flex items-center gap-2.5 font-bold text-sm">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0090ff] to-[#00bfff] flex items-center justify-center text-xs font-black text-white">P</div>
-                    <span className="hidden sm:inline">Páginas Web Creativas</span>
+                <Link href="/" className="flex items-center">
+                    <img src="/images/logo.svg" alt="Páginas Web Creativas" className="h-14 w-auto" />
                 </Link>
                 <div className="text-sm font-semibold">{tool.icon} {tool.name}</div>
                 <Link href="/herramientas" className="text-sm text-[#94a3b8] hover:text-[#0090ff] transition">
