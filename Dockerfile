@@ -39,8 +39,8 @@ COPY . .
 # Copy built assets from node stage
 COPY --from=node-builder /app/public/build ./public/build
 
-# Remove any local .env so runtime env vars from Coolify are used
-RUN rm -f .env
+# Remove local .env and Vite hot file so production uses built assets + Coolify env vars
+RUN rm -f .env public/hot
 
 # Install PHP dependencies
 RUN composer install --optimize-autoloader --no-dev --no-interaction
