@@ -9,6 +9,36 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\BlogPostController as AdminBlogPostController;
 use App\Http\Controllers\Admin\LeadController as AdminLeadController;
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
+
+// =============================================
+// REDIRECCIONES 301 — URLs viejas de WordPress
+// =============================================
+Route::permanentRedirect('/nuestros-servicios-web/desarrollo-de-aplicaciones-web', '/servicios/aplicaciones-web');
+Route::permanentRedirect('/nuestros-servicios-web/diseno-de-paginas-web', '/servicios/paginas-web');
+Route::permanentRedirect('/nuestros-servicios-web/diseno-web-profesional', '/servicios/paginas-web');
+Route::permanentRedirect('/nuestros-servicios-web/tienda-virtual', '/servicios/tiendas-online');
+Route::permanentRedirect('/nuestros-servicios-web/tiendas-en-linea', '/servicios/tiendas-online');
+Route::permanentRedirect('/nuestros-servicios-web/posicionamiento-seo', '/servicios/paginas-web');
+Route::permanentRedirect('/nuestros-servicios-web/marketing-digital', '/servicios');
+Route::permanentRedirect('/nuestros-servicios-web', '/servicios');
+Route::permanentRedirect('/portafolio-web', '/portafolio');
+Route::permanentRedirect('/contacto-paginas-web-creativas', '/contacto');
+Route::permanentRedirect('/blog-paginas-web-creativas', '/blog');
+Route::permanentRedirect('/nosotros', '/');
+Route::permanentRedirect('/quienes-somos', '/');
+
+// Bloquear URLs de WordPress que ya no existen (410 Gone)
+Route::get('/wp-content/{any}', fn () => abort(410))->where('any', '.*');
+Route::get('/wp-admin/{any?}', fn () => abort(410));
+Route::get('/wp-login.php', fn () => abort(410));
+Route::get('/wp-includes/{any}', fn () => abort(410))->where('any', '.*');
+Route::get('/xmlrpc.php', fn () => abort(410));
+Route::get('/wp-json/{any?}', fn () => abort(410))->where('any', '.*');
+
+// Paginación vieja de WordPress
+Route::get('/page/{any}', fn () => redirect('/', 301))->where('any', '.*');
 
 /*
 |--------------------------------------------------------------------------
@@ -33,14 +63,43 @@ Route::get('/herramientas/{slug}', [ToolController::class, 'show'])->name('tools
 // Formulario de contacto (API)
 Route::post('/api/leads', [LeadController::class, 'store'])->name('leads.store');
 
-// Sitemap (SEO)
+// Sitemap (SEO) — spatie/laravel-sitemap
 Route::get('/sitemap.xml', function () {
-    $posts = \App\Models\BlogPost::published()->get();
-    $tools = \App\Models\Tool::active()->get();
-    $projects = \App\Models\Project::active()->get();
+    $sitemap = Sitemap::create()
+        ->add(Url::create('/')
+            ->setPriority(1.0)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY))
+        ->add(Url::create('/herramientas')
+            ->setPriority(0.7)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY))
+        ->add(Url::create('/blog')
+            ->setPriority(0.7)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
 
-    return response()->view('sitemap', compact('posts', 'tools', 'projects'))
-        ->header('Content-Type', 'application/xml');
+    // Herramientas individuales
+    \App\Models\Tool::where('status', 'active')->get()->each(function ($tool) use ($sitemap) {
+        $sitemap->add(Url::create("/herramientas/{$tool->slug}")
+            ->setLastModificationDate($tool->updated_at)
+            ->setPriority(0.6)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
+    });
+
+    // Posts del blog
+    \App\Models\BlogPost::where('published', true)->get()->each(function ($post) use ($sitemap) {
+        $sitemap->add(Url::create("/blog/{$post->slug}")
+            ->setLastModificationDate($post->updated_at)
+            ->setPriority(0.7)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
+    });
+
+    // Proyectos del portafolio
+    \App\Models\Project::all()->each(function ($project) use ($sitemap) {
+        $sitemap->add(Url::create("/portafolio/{$project->slug}")
+            ->setPriority(0.7)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
+    });
+
+    return $sitemap->toResponse(request());
 })->name('sitemap');
 
 /*

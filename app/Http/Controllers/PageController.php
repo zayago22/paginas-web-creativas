@@ -7,16 +7,35 @@ use App\Models\Project;
 use App\Models\Service;
 use App\Models\Testimonial;
 use App\Models\Tool;
+use App\Traits\HasSeoData;
 use Inertia\Inertia;
 
 class PageController extends Controller
 {
+    use HasSeoData;
     /**
      * Landing page principal — carga todos los datos de todas las secciones.
      */
     public function home()
     {
-        return Inertia::render('Home', [
+        return Inertia::render('Home', array_merge(
+            $this->seo([
+                'title' => 'Diseño de Páginas Web Profesionales en México | Desde $8,999 MXN',
+                'description' => 'Agencia de desarrollo web especializada en Laravel y React. Creamos páginas web, tiendas online, escuelas virtuales y aplicaciones web a medida. +100 proyectos entregados en México.',
+                'canonical' => 'https://paginaswebcreativas.com',
+                'extra_schema' => [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'WebSite',
+                    'name' => 'Páginas Web Creativas',
+                    'url' => 'https://paginaswebcreativas.com',
+                    'potentialAction' => [
+                        '@type' => 'SearchAction',
+                        'target' => 'https://paginaswebcreativas.com/blog?q={search_term_string}',
+                        'query-input' => 'required name=search_term_string',
+                    ],
+                ],
+            ]),
+            [
             'services' => Service::active()->ordered()->get(),
             'projects' => Project::active()->featured()->ordered()->limit(6)->get()->map(fn($p) => [
                 'id' => $p->id,
@@ -63,7 +82,7 @@ class PageController extends Controller
                 'satisfaction' => 98,
                 'response_time' => '24h',
             ],
-        ]);
+        ]));
     }
 
     /**

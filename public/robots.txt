@@ -1,2 +1,12 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /api/
+Disallow: /login
+Disallow: /register
+Disallow: /password
+Disallow: /sanctum
+Disallow: /_ignition
+
+Sitemap: https://paginaswebcreativas.com/sitemap.xml

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\BlogPost;
+use App\Traits\HasSeoData;
 use Inertia\Inertia;
 
 class BlogController extends Controller
 {
+    use HasSeoData;
     /**
      * Listado de artículos del blog con paginación.
      */
@@ -32,11 +34,18 @@ class BlogController extends Controller
             ->distinct()
             ->pluck('category');
 
-        return Inertia::render('Blog/Index', [
-            'posts' => $posts,
-            'categories' => $categories,
-            'filters' => request()->only('category', 'search'),
-        ]);
+        return Inertia::render('Blog/Index', array_merge(
+            $this->seo([
+                'title' => 'Blog de Desarrollo Web | Laravel, React y SEO | Páginas Web Creativas',
+                'description' => 'Artículos sobre desarrollo web, Laravel, React, Inertia.js, SEO y marketing digital. Aprende a crear sitios web profesionales.',
+                'canonical' => 'https://paginaswebcreativas.com/blog',
+            ]),
+            [
+                'posts' => $posts,
+                'categories' => $categories,
+                'filters' => request()->only('category', 'search'),
+            ]
+        ));
     }
 
     /**
@@ -61,7 +70,25 @@ class BlogController extends Controller
                 'image_url' => $p->image_url,
             ]);
 
-        return Inertia::render('Blog/Show', [
+        return Inertia::render('Blog/Show', array_merge(
+            $this->seo([
+                'title' => $post->meta_title_computed,
+                'description' => $post->meta_description_computed,
+                'canonical' => 'https://paginaswebcreativas.com/blog/' . $post->slug,
+                'og_image' => $post->image_url,
+                'extra_schema' => [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'Article',
+                    'headline' => $post->title,
+                    'description' => $post->excerpt,
+                    'image' => $post->image_url,
+                    'datePublished' => $post->published_at->toIso8601String(),
+                    'dateModified' => $post->updated_at->toIso8601String(),
+                    'author' => ['@type' => 'Organization', 'name' => 'Páginas Web Creativas'],
+                    'publisher' => ['@type' => 'Organization', 'name' => 'Páginas Web Creativas', 'url' => 'https://paginaswebcreativas.com'],
+                ],
+            ]),
+            [
             'post' => [
                 'id' => $post->id,
                 'title' => $post->title,
@@ -78,6 +105,6 @@ class BlogController extends Controller
                 'meta_description' => $post->meta_description_computed,
             ],
             'relatedPosts' => $related,
-        ]);
+        ]));
     }
 }
