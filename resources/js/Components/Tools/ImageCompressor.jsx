@@ -9,12 +9,15 @@
  */
 
 import { useState, useRef, useCallback } from 'react';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 export default function ImageCompressor() {
     const [files, setFiles] = useState([]);
     const [quality, setQuality] = useState(80);
     const [results, setResults] = useState([]);
     const [processing, setProcessing] = useState(false);
+    const [zipping, setZipping] = useState(false);
     const inputRef = useRef(null);
     const dropRef = useRef(null);
 
@@ -69,7 +72,20 @@ export default function ImageCompressor() {
         link.click();
     };
 
-    const downloadAll = () => results.forEach(downloadFile);
+    const downloadAll = async () => {
+        setZipping(true);
+        try {
+            const zip = new JSZip();
+            results.forEach((r) => {
+                const filename = r.name.replace(/\.[^.]+$/, '-compressed.jpg');
+                zip.file(filename, r.blob);
+            });
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+            saveAs(zipBlob, 'imagenes-comprimidas.zip');
+        } finally {
+            setZipping(false);
+        }
+    };
 
     const formatSize = (bytes) => {
         if (bytes < 1024) return bytes + ' B';
@@ -137,9 +153,9 @@ export default function ImageCompressor() {
                     <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
                         <span className="font-bold text-[#00e4b8]">✓ {results.length} imágenes comprimidas</span>
                         <div className="flex gap-3">
-                            <button onClick={downloadAll}
-                                    className="px-5 py-2 rounded-lg bg-gradient-to-r from-[#0090ff] to-[#00bfff] text-white text-sm font-semibold hover:shadow-lg transition">
-                                ⬇ Descargar todo
+                            <button onClick={downloadAll} disabled={zipping}
+                                    className="px-5 py-2 rounded-lg bg-gradient-to-r from-[#0090ff] to-[#00bfff] text-white text-sm font-semibold hover:shadow-lg transition disabled:opacity-60 disabled:cursor-wait">
+                                {zipping ? '⏳ Generando ZIP...' : '⬇ Descargar todo (.zip)'}
                             </button>
                             <button onClick={() => { setFiles([]); setResults([]); }}
                                     className="px-5 py-2 rounded-lg border border-white/[0.06] text-sm text-[#94a3b8] hover:border-[#0090ff]/20 transition">
