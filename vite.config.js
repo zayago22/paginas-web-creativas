@@ -17,52 +17,23 @@ export default defineConfig({
             '@': '/resources/js',
         },
     },
-    server: {
-        host: '127.0.0.1',
-    },
     build: {
-        // Minification (esbuild is default and fast)
         minify: 'esbuild',
-        // Increase chunk size warning limit (sections are intentionally split)
-        chunkSizeWarningLimit: 600,
+        chunkSizeWarningLimit: 800,
         rollupOptions: {
             output: {
-                // Manual chunks — split vendor and heavy libs for better caching
                 manualChunks(id) {
-                    // Core React vendor chunk
-                    if (id.includes('node_modules/react/') ||
-                        id.includes('node_modules/react-dom/') ||
-                        id.includes('node_modules/scheduler/')) {
-                        return 'vendor-react';
-                    }
-                    // Inertia chunk
-                    if (id.includes('node_modules/@inertiajs/')) {
-                        return 'vendor-inertia';
-                    }
-                    // Animations — framer-motion is heavy, isolate it
-                    if (id.includes('node_modules/framer-motion')) {
-                        return 'vendor-animations';
-                    }
-                    // Icons
-                    if (id.includes('node_modules/lucide-react')) {
-                        return 'vendor-icons';
-                    }
-                    // QR code library
-                    if (id.includes('node_modules/qrcode')) {
-                        return 'vendor-qrcode';
-                    }
-                    // Image compression
-                    if (id.includes('node_modules/browser-image-compression')) {
-                        return 'vendor-imgcompression';
-                    }
-                    // ZIP / file-saver
-                    if (id.includes('node_modules/jszip') || id.includes('node_modules/file-saver')) {
-                        return 'vendor-zip';
-                    }
-                    // Font source files
-                    if (id.includes('node_modules/@fontsource')) {
-                        return 'vendor-fonts';
-                    }
+                    if (id.includes('node_modules/react') || id.includes('node_modules/scheduler')) return 'vendor-react';
+                    if (id.includes('@inertiajs')) return 'vendor-inertia';
+                    if (id.includes('framer-motion')) return 'vendor-animations';
+                    if (id.includes('lucide-react')) return 'vendor-icons';
+                    if (id.includes('qrcode')) return 'vendor-qrcode';
+                    if (id.includes('@fontsource')) return 'vendor-fonts';
+                    if (id.includes('browser-image-compression')) return 'vendor-imgcompression';
+                    if (id.includes('jszip') || id.includes('file-saver')) return 'vendor-zip';
+                    if (id.includes('pdf-lib')) return 'vendor-pdf';
+                    if (id.includes('@imgly/background-removal')) return 'vendor-bgremoval';
+                    if (id.includes('cropperjs')) return 'vendor-cropper';
                 },
             },
         },
