@@ -10,7 +10,7 @@ export default function ToolsIndex({ toolsByCategory }) {
 
     return (
         <AppLayout>
-            <Head title="Herramientas Gratuitas para Imágenes" />
+            <Head title="Herramientas Gratuitas Online" />
 
             <section className="pt-40 pb-12 text-center">
                 <div className="max-w-[1100px] mx-auto px-6">
@@ -20,11 +20,11 @@ export default function ToolsIndex({ toolsByCategory }) {
                     <h1 className="text-4xl md:text-5xl font-black mb-4">
                         Herramientas{' '}
                         <span className="bg-gradient-to-r from-[#0090ff] via-[#00bfff] to-[#00e4b8] bg-clip-text text-transparent">
-                            para tus imágenes
+                            gratuitas online
                         </span>
                     </h1>
                     <p className="text-lg text-[#8899aa] max-w-[560px] mx-auto leading-relaxed">
-                        Comprime, edita, convierte y optimiza directamente en tu navegador. Nada se sube a ningún servidor.
+                        Imágenes, PDFs y utilidades web. Todo se procesa en tu navegador, nada se sube a ningún servidor.
                     </p>
 
                     <div className="flex flex-wrap justify-center gap-6 mt-8 text-sm text-[#8899aa]">
