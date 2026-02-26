@@ -171,6 +171,8 @@ export default function ProjectShow({ project, related }) {
                             <img
                                 src={project.image_url}
                                 alt={project.title}
+                                loading="lazy"
+                                decoding="async"
                                 className="w-full max-h-[560px] object-cover hover:scale-[1.01] transition-transform duration-500"
                             />
                         </div>
@@ -206,6 +208,8 @@ export default function ProjectShow({ project, related }) {
                                         <img
                                             src={url}
                                             alt={`${project.title} — imagen ${i + 1}`}
+                                            loading="lazy"
+                                            decoding="async"
                                             className={`w-full object-cover group-hover:scale-105 transition-transform duration-500 ${isFeature ? 'h-72' : 'h-52'}`}
                                         />
                                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

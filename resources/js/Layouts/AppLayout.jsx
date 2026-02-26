@@ -13,6 +13,14 @@ export default function AppLayout({ children, title }) {
 
     return (
         <>
+            {/* Skip to main content (accesibilidad) */}
+            <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[9999] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-[#0090ff] focus:text-white focus:font-semibold focus:text-sm"
+            >
+                Saltar al contenido principal
+            </a>
+
             {/* Background Blobs */}
             <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
                 <div className="blob-bg absolute w-[600px] h-[600px] rounded-full bg-[#0090ff] blur-[120px] opacity-[0.15] -top-[10%] -left-[10%] animate-float" />
@@ -34,7 +42,7 @@ export default function AppLayout({ children, title }) {
             )}
 
             {/* Navbar */}
-            <nav className={`fixed top-0 left-0 right-0 z-[1000] py-3 transition-all duration-400
+            <nav role="banner" aria-label="Navegación principal" className={`fixed top-0 left-0 right-0 z-[1000] py-3 transition-all duration-400
                 ${scrolled ? 'bg-[#0c1222]/85 backdrop-blur-xl border-b border-white/[0.06] py-2' : ''}`}>
                 <div className="max-w-[1200px] mx-auto px-6 flex items-center justify-between">
                     <Link href="/" className="flex items-center">
@@ -69,12 +77,12 @@ export default function AppLayout({ children, title }) {
             </nav>
 
             {/* Page Content */}
-            <div className="relative z-[1]">
+            <main id="main-content" role="main" className="relative z-[1]">
                 {children}
-            </div>
+            </main>
 
             {/* Footer */}
-            <footer className="border-t border-white/[0.06] py-20 relative z-[1]">
+            <footer role="contentinfo" className="border-t border-white/[0.06] py-20 relative z-[1]">
                 <div className="max-w-[1200px] mx-auto px-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
                         <div>

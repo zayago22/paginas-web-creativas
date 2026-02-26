@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ToolController;
+use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
@@ -56,6 +57,13 @@ Route::get('/portafolio/{slug}', [PageController::class, 'project'])->name('proj
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
+// Servicios
+Route::get('/servicios', [ServiciosController::class, 'index'])->name('servicios.index');
+Route::get('/servicios/paginas-web', [ServiciosController::class, 'paginasWeb'])->name('servicios.paginas-web');
+Route::get('/servicios/tiendas-online', [ServiciosController::class, 'tiendasOnline'])->name('servicios.tiendas-online');
+Route::get('/servicios/escuelas-virtuales', [ServiciosController::class, 'escuelasVirtuales'])->name('servicios.escuelas-virtuales');
+Route::get('/servicios/aplicaciones-web', [ServiciosController::class, 'aplicacionesWeb'])->name('servicios.aplicaciones-web');
+
 // Herramientas gratuitas
 Route::get('/herramientas', [ToolController::class, 'index'])->name('tools.index');
 Route::get('/herramientas/{slug}', [ToolController::class, 'show'])->name('tools.show');
@@ -69,6 +77,21 @@ Route::get('/sitemap.xml', function () {
         ->add(Url::create('/')
             ->setPriority(1.0)
             ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY))
+        ->add(Url::create('/servicios')
+            ->setPriority(0.8)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY))
+        ->add(Url::create('/servicios/paginas-web')
+            ->setPriority(0.8)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY))
+        ->add(Url::create('/servicios/tiendas-online')
+            ->setPriority(0.8)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY))
+        ->add(Url::create('/servicios/escuelas-virtuales')
+            ->setPriority(0.8)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY))
+        ->add(Url::create('/servicios/aplicaciones-web')
+            ->setPriority(0.8)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY))
         ->add(Url::create('/herramientas')
             ->setPriority(0.7)
             ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY))
