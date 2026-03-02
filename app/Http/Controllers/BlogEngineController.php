@@ -179,6 +179,14 @@ class BlogEngineController extends Controller
     }
 
     // ---------------------------------------------------------------
+    // GET /contacto  →  formulario de contacto (SSR)
+    // ---------------------------------------------------------------
+    public function contacto()
+    {
+        return view('blogengine.contacto');
+    }
+
+    // ---------------------------------------------------------------
     // Fetch con cache — nunca cachea respuestas vacías / null
     // ---------------------------------------------------------------
     private function fetch(string $endpoint): ?array

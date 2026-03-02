@@ -72,6 +72,9 @@ Route::get('/servicios/aplicaciones-web', [ServiciosController::class, 'aplicaci
 Route::get('/herramientas', [ToolController::class, 'index'])->name('tools.index');
 Route::get('/herramientas/{slug}', [ToolController::class, 'show'])->name('tools.show');
 
+// Contacto (landing page SSR con formulario)
+Route::get('/contacto', [BlogEngineController::class, 'contacto'])->name('contacto');
+
 // Formulario de contacto (API)
 Route::post('/api/leads', [LeadController::class, 'store'])->name('leads.store');
 
