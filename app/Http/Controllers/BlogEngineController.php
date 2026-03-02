@@ -38,7 +38,6 @@ class BlogEngineController extends Controller
         try {
             $posts = $this->fetch("/api/public/{$this->blogSlug}/posts?limit=20");
 
-            // Si la API falla o el slug aún no existe, mostramos blog vacío (no 503)
             if ($posts === null) {
                 $posts = [];
             }
@@ -51,14 +50,26 @@ class BlogEngineController extends Controller
                 'og_image'    => asset('images/og-paginaswebcreativas.jpg'),
             ];
 
-            return view('blogengine.index', compact('posts', 'meta'));
-        } catch (\Throwable $e) {
-            // Debug temporal — eliminar después de resolver el 500
-            if (config('app.debug')) {
-                throw $e;
+            // Intentar renderizar la vista manualmente para atrapar errores de Blade
+            try {
+                $html = view('blogengine.index', compact('posts', 'meta'))->render();
+                return response($html);
+            } catch (\Throwable $viewError) {
+                return response(
+                    '<pre>[BlogEngine View Error] ' . get_class($viewError) . "\n"
+                    . $viewError->getMessage() . "\n\n"
+                    . 'File: ' . $viewError->getFile() . ':' . $viewError->getLine() . "\n\n"
+                    . 'Trace: ' . $viewError->getTraceAsString()
+                    . '</pre>', 500
+                )->header('Content-Type', 'text/html');
             }
-            return response('[BlogEngine Debug] ' . get_class($e) . ': ' . $e->getMessage() . ' en ' . $e->getFile() . ':' . $e->getLine(), 500)
-                ->header('Content-Type', 'text/plain');
+        } catch (\Throwable $e) {
+            return response(
+                '<pre>[BlogEngine Controller Error] ' . get_class($e) . "\n"
+                . $e->getMessage() . "\n\n"
+                . 'File: ' . $e->getFile() . ':' . $e->getLine()
+                . '</pre>', 500
+            )->header('Content-Type', 'text/html');
         }
     }
 
