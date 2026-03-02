@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BlogEngineController;
 use App\Http\Controllers\ToolController;
 use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\LeadController;
@@ -53,9 +54,12 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 // Portafolio (detalle de proyecto)
 Route::get('/portafolio/{slug}', [PageController::class, 'project'])->name('project.show');
 
-// Blog
-Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+// Blog — powered by BlogEngine (server-side rendered, SEO-first)
+// sitemap y rss ANTES de {slug} para evitar conflicto de parámetros
+Route::get('/blog',              [BlogEngineController::class, 'index'])->name('blog.index');
+Route::get('/blog/sitemap.xml',  [BlogEngineController::class, 'sitemap'])->name('blog.sitemap');
+Route::get('/blog/rss.xml',      [BlogEngineController::class, 'rss'])->name('blog.rss');
+Route::get('/blog/{slug}',       [BlogEngineController::class, 'show'])->name('blog.show');
 
 // Servicios
 Route::get('/servicios', [ServiciosController::class, 'index'])->name('servicios.index');
@@ -107,13 +111,35 @@ Route::get('/sitemap.xml', function () {
             ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
     });
 
-    // Posts del blog
-    \App\Models\BlogPost::where('published', true)->get()->each(function ($post) use ($sitemap) {
-        $sitemap->add(Url::create("/blog/{$post->slug}")
-            ->setLastModificationDate($post->updated_at)
-            ->setPriority(0.7)
-            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
-    });
+    // Posts del blog — obtenidos desde BlogEngine API
+    try {
+        $blogApiUrl = env('BLOGENGINE_API_URL', 'https://blogengineseo.com');
+        $blogSlug   = env('BLOGENGINE_SLUG', 'paginaswebcreativas');
+        $blogPosts  = \Illuminate\Support\Facades\Cache::remember(
+            'sitemap_blogengine_posts',
+            3600,
+            fn () => \Illuminate\Support\Facades\Http::timeout(8)
+                ->acceptJson()
+                ->get("{$blogApiUrl}/api/public/{$blogSlug}/posts?limit=200")
+                ->json()
+        );
+
+        if (is_array($blogPosts)) {
+            foreach ($blogPosts as $post) {
+                if (empty($post['slug'])) continue;
+                $lastmod = isset($post['fecha_publicado'])
+                    ? \Carbon\Carbon::parse($post['fecha_publicado'])
+                    : now();
+                $sitemap->add(Url::create("/blog/{$post['slug']}")
+                    ->setLastModificationDate($lastmod)
+                    ->setPriority(0.8)
+                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
+            }
+        }
+    } catch (\Exception $e) {
+        // Si la API falla, el sitemap se genera sin posts del blog (no rompemos el sitemap)
+        report($e);
+    }
 
     // Proyectos del portafolio
     \App\Models\Project::all()->each(function ($project) use ($sitemap) {
