@@ -25,9 +25,9 @@ class BlogEngineController extends Controller
 
     public function __construct()
     {
-        $this->apiUrl    = env('BLOGENGINE_API_URL', 'https://blogengineseo.com');
-        $this->blogSlug  = env('BLOGENGINE_SLUG',   'paginaswebcreativas');
-        $this->cacheTtl  = (int) env('BLOGENGINE_CACHE_TTL', 3600);
+        $this->apiUrl    = config('services.blogengine.url',       'https://blogengineseo.com');
+        $this->blogSlug  = config('services.blogengine.slug',      'paginaswebcreativas');
+        $this->cacheTtl  = (int) config('services.blogengine.cache_ttl', 3600);
     }
 
     // ---------------------------------------------------------------
@@ -37,8 +37,9 @@ class BlogEngineController extends Controller
     {
         $posts = $this->fetch("/api/public/{$this->blogSlug}/posts?limit=20");
 
+        // Si la API falla o el slug aún no existe, mostramos blog vacío (no 503)
         if ($posts === null) {
-            abort(503, 'Blog temporalmente no disponible.');
+            $posts = [];
         }
 
         $meta = [
@@ -185,10 +186,14 @@ class BlogEngineController extends Controller
     {
         $cacheKey = 'blogengine_pwc_' . md5($endpoint);
 
-        // Intentamos leer de caché primero
-        $cached = Cache::get($cacheKey);
-        if ($cached !== null) {
-            return $cached;
+        try {
+            // Intentamos leer de caché primero
+            $cached = Cache::get($cacheKey);
+            if ($cached !== null) {
+                return $cached;
+            }
+        } catch (\Exception $e) {
+            // Si la caché falla (ej: BD caída) continuamos sin caché
         }
 
         try {
@@ -201,7 +206,11 @@ class BlogEngineController extends Controller
 
                 // Solo cachear si hay datos (no array vacío, no null)
                 if (!empty($data)) {
-                    Cache::put($cacheKey, $data, $this->cacheTtl);
+                    try {
+                        Cache::put($cacheKey, $data, $this->cacheTtl);
+                    } catch (\Exception $e) {
+                        // Fallo de caché no es fatal
+                    }
                 }
 
                 return $data;

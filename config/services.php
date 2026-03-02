@@ -28,6 +28,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'blogengine' => [
+        'url'       => env('BLOGENGINE_API_URL', 'https://blogengineseo.com'),
+        'slug'      => env('BLOGENGINE_SLUG', 'paginaswebcreativas'),
+        'cache_ttl' => env('BLOGENGINE_CACHE_TTL', 3600),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
