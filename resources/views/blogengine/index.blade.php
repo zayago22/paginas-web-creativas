@@ -69,35 +69,38 @@
     </div>
 
     {{-- Grid de artículos --}}
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 1.75rem;
+    ">
     @forelse($posts as $post)
     <article style="
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0;
+        display: flex;
+        flex-direction: column;
         background: var(--bg-card);
         border: 1px solid var(--border);
         border-radius: 16px;
         overflow: hidden;
-        margin-bottom: 2rem;
         transition: border-color .2s, box-shadow .2s;
     "
     onmouseenter="this.style.borderColor='rgba(0,144,255,.35)'; this.style.boxShadow='0 8px 30px rgba(0,144,255,.08)';"
     onmouseleave="this.style.borderColor='var(--border)'; this.style.boxShadow='none';"
     >
         @if(!empty($post['imagen_destacada_url']))
-        <a href="/blog/{{ $post['slug'] }}" style="display:block; overflow:hidden; max-height: 280px;">
+        <a href="/blog/{{ $post['slug'] }}" style="display:block; overflow:hidden; aspect-ratio: 16/9;">
             <img
                 src="{{ $post['imagen_destacada_url'] }}"
                 alt="{{ $post['imagen_destacada_alt'] ?? $post['titulo'] }}"
                 loading="lazy"
-                style="width:100%; height:280px; object-fit:cover; transition: transform .4s ease; display:block;"
+                style="width:100%; height:100%; object-fit:cover; transition: transform .4s ease; display:block;"
                 onmouseenter="this.style.transform='scale(1.03)'"
                 onmouseleave="this.style.transform='scale(1)'"
             >
         </a>
         @endif
 
-        <div style="padding: 1.75rem 2rem 2rem;">
+        <div style="padding: 1.5rem; display:flex; flex-direction:column; flex:1;">
             @if(!empty($post['keyword']))
             <span style="
                 font-size: 0.7rem;
@@ -114,7 +117,7 @@
             @endif
 
             <h2 style="
-                font-size: 1.35rem;
+                font-size: 1.15rem;
                 font-weight: 700;
                 line-height: 1.3;
                 margin: 0 0 0.75rem;
@@ -148,6 +151,7 @@
                 justify-content: space-between;
                 flex-wrap: wrap;
                 gap: 0.75rem;
+                margin-top: auto;
             ">
                 @if(!empty($post['fecha_publicado']))
                 <time
@@ -179,11 +183,13 @@
         text-align: center;
         padding: 6rem 1rem;
         color: var(--text-dim);
+        grid-column: 1 / -1;
     ">
         <p style="font-size: 1.1rem;">Próximamente publicaremos contenido aquí.</p>
         <a href="/" style="color: var(--blue); font-size: 0.9rem;">← Volver al inicio</a>
     </div>
     @endforelse
+    </div>
 
 </div>
 @endsection
