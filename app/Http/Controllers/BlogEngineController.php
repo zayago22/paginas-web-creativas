@@ -35,22 +35,31 @@ class BlogEngineController extends Controller
     // ---------------------------------------------------------------
     public function index()
     {
-        $posts = $this->fetch("/api/public/{$this->blogSlug}/posts?limit=20");
+        try {
+            $posts = $this->fetch("/api/public/{$this->blogSlug}/posts?limit=20");
 
-        // Si la API falla o el slug aún no existe, mostramos blog vacío (no 503)
-        if ($posts === null) {
-            $posts = [];
+            // Si la API falla o el slug aún no existe, mostramos blog vacío (no 503)
+            if ($posts === null) {
+                $posts = [];
+            }
+
+            $meta = [
+                'title'       => 'Blog de Desarrollo Web | Laravel, React y SEO | Páginas Web Creativas',
+                'description' => 'Artículos sobre desarrollo web, Laravel, React, Inertia.js, SEO y marketing digital. Aprende a crear sitios web profesionales con Páginas Web Creativas.',
+                'canonical'   => 'https://paginaswebcreativas.com/blog',
+                'og_type'     => 'website',
+                'og_image'    => asset('images/og-paginaswebcreativas.jpg'),
+            ];
+
+            return view('blogengine.index', compact('posts', 'meta'));
+        } catch (\Throwable $e) {
+            // Debug temporal — eliminar después de resolver el 500
+            if (config('app.debug')) {
+                throw $e;
+            }
+            return response('[BlogEngine Debug] ' . get_class($e) . ': ' . $e->getMessage() . ' en ' . $e->getFile() . ':' . $e->getLine(), 500)
+                ->header('Content-Type', 'text/plain');
         }
-
-        $meta = [
-            'title'       => 'Blog de Desarrollo Web | Laravel, React y SEO | Páginas Web Creativas',
-            'description' => 'Artículos sobre desarrollo web, Laravel, React, Inertia.js, SEO y marketing digital. Aprende a crear sitios web profesionales con Páginas Web Creativas.',
-            'canonical'   => 'https://paginaswebcreativas.com/blog',
-            'og_type'     => 'website',
-            'og_image'    => asset('images/og-paginaswebcreativas.jpg'),
-        ];
-
-        return view('blogengine.index', compact('posts', 'meta'));
     }
 
     // ---------------------------------------------------------------
