@@ -50,11 +50,10 @@
     {{-- ===== RSS ===== --}}
     <link rel="alternate" type="application/rss+xml" title="Blog | Páginas Web Creativas" href="https://paginaswebcreativas.com/blog/rss.xml">
 
-    {{-- ===== PRELOAD FONT ===== --}}
-    <link rel="preload" href="/fonts/Outfit-Variable.woff2" as="font" type="font/woff2" crossorigin>
-
-    {{-- ===== CSS (Vite — solo CSS, sin JS de React/Inertia) ===== --}}
-    @vite('resources/css/app.css')
+    {{-- ===== FONT ===== --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..800&display=swap" rel="stylesheet">
 
     {{-- ===== ESTILOS TIPOGRAFÍA ARTÍCULO ===== --}}
     <style>
