@@ -35,42 +35,21 @@ class BlogEngineController extends Controller
     // ---------------------------------------------------------------
     public function index()
     {
-        try {
-            $posts = $this->fetch("/api/public/{$this->blogSlug}/posts?limit=20");
+        $posts = $this->fetch("/api/public/{$this->blogSlug}/posts?limit=20");
 
-            if ($posts === null) {
-                $posts = [];
-            }
-
-            $meta = [
-                'title'       => 'Blog de Desarrollo Web | Laravel, React y SEO | Páginas Web Creativas',
-                'description' => 'Artículos sobre desarrollo web, Laravel, React, Inertia.js, SEO y marketing digital. Aprende a crear sitios web profesionales con Páginas Web Creativas.',
-                'canonical'   => 'https://paginaswebcreativas.com/blog',
-                'og_type'     => 'website',
-                'og_image'    => asset('images/og-paginaswebcreativas.jpg'),
-            ];
-
-            // Intentar renderizar la vista manualmente para atrapar errores de Blade
-            try {
-                $html = view('blogengine.index', compact('posts', 'meta'))->render();
-                return response($html);
-            } catch (\Throwable $viewError) {
-                return response(
-                    '<pre>[BlogEngine View Error] ' . get_class($viewError) . "\n"
-                    . $viewError->getMessage() . "\n\n"
-                    . 'File: ' . $viewError->getFile() . ':' . $viewError->getLine() . "\n\n"
-                    . 'Trace: ' . $viewError->getTraceAsString()
-                    . '</pre>', 500
-                )->header('Content-Type', 'text/html');
-            }
-        } catch (\Throwable $e) {
-            return response(
-                '<pre>[BlogEngine Controller Error] ' . get_class($e) . "\n"
-                . $e->getMessage() . "\n\n"
-                . 'File: ' . $e->getFile() . ':' . $e->getLine()
-                . '</pre>', 500
-            )->header('Content-Type', 'text/html');
+        if ($posts === null) {
+            $posts = [];
         }
+
+        $meta = [
+            'title'       => 'Blog de Desarrollo Web | Laravel, React y SEO | Páginas Web Creativas',
+            'description' => 'Artículos sobre desarrollo web, Laravel, React, Inertia.js, SEO y marketing digital. Aprende a crear sitios web profesionales con Páginas Web Creativas.',
+            'canonical'   => 'https://paginaswebcreativas.com/blog',
+            'og_type'     => 'website',
+            'og_image'    => asset('images/og-paginaswebcreativas.jpg'),
+        ];
+
+        return view('blogengine.index', compact('posts', 'meta'));
     }
 
     // ---------------------------------------------------------------

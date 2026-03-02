@@ -11,8 +11,8 @@
 @section('schema_ld')
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
-    "@type": "Blog",
+    "@@context": "https://schema.org",
+    "@@type": "Blog",
     "name": "Blog | Páginas Web Creativas",
     "description": "{{ $meta['description'] }}",
     "url": "{{ $meta['canonical'] }}",
