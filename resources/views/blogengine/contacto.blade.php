@@ -32,7 +32,7 @@
 <div style="max-width: 1200px; margin: 0 auto; padding: 4rem 1.25rem 5rem;">
 
     {{-- Hero --}}
-    <div style="
+    <div id="contact-grid" style="
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 3rem;
@@ -203,7 +203,7 @@
                 </div>
 
                 {{-- Teléfono y Empresa --}}
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div id="phone-company-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div>
                         <label for="phone" style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">Teléfono</label>
                         <input
@@ -470,9 +470,12 @@ document.addEventListener('DOMContentLoaded', function() {
     @@keyframes spin { to { transform: rotate(360deg); } }
 
     @@media (max-width: 768px) {
-        div[style*="grid-template-columns: 1fr 1fr"] {
+        #contact-grid {
             display: flex !important;
             flex-direction: column !important;
+        }
+        #phone-company-grid {
+            grid-template-columns: 1fr !important;
         }
     }
 </style>

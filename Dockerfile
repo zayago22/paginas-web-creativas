@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_mysql mbstring zip gd opcache \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# OPcache configuration
+COPY docker/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 

@@ -15,13 +15,18 @@
     @yield('meta_keywords')
 
     {{-- ===== OPEN GRAPH ===== --}}
+    @php
+        $ogFallback = file_exists(public_path('images/og-paginaswebcreativas.jpg'))
+            ? asset('images/og-paginaswebcreativas.jpg')
+            : asset('images/logo.png');
+    @endphp
     <meta property="og:locale"    content="es_MX">
     <meta property="og:site_name" content="Páginas Web Creativas">
     <meta property="og:type"      content="@yield('og_type', 'website')">
     <meta property="og:title"     content="@yield('title', 'Blog | Páginas Web Creativas')">
     <meta property="og:description" content="@yield('meta_description', 'Artículos sobre desarrollo web, Laravel, React y SEO.')">
     <meta property="og:url"       content="@yield('canonical', url()->current())">
-    <meta property="og:image"     content="@yield('og_image', asset('images/og-paginaswebcreativas.jpg'))">
+    <meta property="og:image"     content="@yield('og_image', $ogFallback)">
     <meta property="og:image:width"  content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt"    content="@yield('og_image_alt', 'Páginas Web Creativas')">
@@ -30,7 +35,7 @@
     <meta name="twitter:card"        content="summary_large_image">
     <meta name="twitter:title"       content="@yield('title', 'Blog | Páginas Web Creativas')">
     <meta name="twitter:description" content="@yield('meta_description', 'Artículos sobre desarrollo web, Laravel, React y SEO.')">
-    <meta name="twitter:image"       content="@yield('og_image', asset('images/og-paginaswebcreativas.jpg'))">
+    <meta name="twitter:image"       content="@yield('og_image', $ogFallback)">
 
     {{-- ===== ARTICLE DATES (solo artículos) ===== --}}
     @hasSection('article_published')
@@ -243,7 +248,7 @@
                 <li><a href="/blog" class="{{ request()->is('blog*') ? 'active' : '' }}">Blog</a></li>
                 <li><a href="/herramientas">Herramientas</a></li>
                 <li><a href="/precios">Precios</a></li>
-                <li><a href="/contacto" class="be-nav-cta">Cotizar <span aria-hidden="true">→</span></a></li>
+                <li><a href="/contacto" class="be-nav-cta {{ request()->is('contacto*') ? 'be-nav-cta-active' : '' }}">Cotizar <span aria-hidden="true">→</span></a></li>
             </ul>
         </nav>
     </header>

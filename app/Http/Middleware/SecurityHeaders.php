@@ -21,11 +21,16 @@ class SecurityHeaders
         $response->headers->set('Content-Security-Policy',
             "default-src 'self'; " .
             "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net https://www.facebook.com; " .
-            "style-src 'self' 'unsafe-inline'; " .
+            // Google Fonts CSS (style-src) + Vite inline styles
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " .
             "img-src 'self' data: https: blob:; " .
-            "font-src 'self' data:; " .
-            "connect-src 'self' https://www.google-analytics.com https://www.facebook.com; " .
-            "frame-src https://www.facebook.com https://www.youtube.com;"
+            // Google Fonts files (font-src) + Vite-bundled woff2
+            "font-src 'self' data: https://fonts.gstatic.com; " .
+            // BlogEngine API + analytics + FB
+            "connect-src 'self' https://blogengineseo.com https://www.google-analytics.com https://www.facebook.com; " .
+            "frame-src https://www.facebook.com https://www.youtube.com; " .
+            "form-action 'self'; " .
+            "base-uri 'self';"
         );
 
         return $response;

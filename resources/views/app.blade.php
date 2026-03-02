@@ -15,13 +15,20 @@
     <meta name="language" content="es-MX">
 
     {{-- ===== OPEN GRAPH ===== --}}
+    @php
+        // Fallback: si no existe og-paginaswebcreativas.jpg, usa logo.png
+        $ogImage = $page['props']['seo']['og_image']
+            ?? (file_exists(public_path('images/og-paginaswebcreativas.jpg'))
+                ? asset('images/og-paginaswebcreativas.jpg')
+                : asset('images/logo.png'));
+    @endphp
     <meta property="og:type" content="website">
     <meta property="og:locale" content="es_MX">
     <meta property="og:site_name" content="Páginas Web Creativas">
     <meta property="og:title" content="{{ $page['props']['seo']['og_title'] ?? $page['props']['seo']['title'] ?? 'Páginas Web Creativas' }}">
     <meta property="og:description" content="{{ $page['props']['seo']['og_description'] ?? $page['props']['seo']['description'] ?? 'Desarrollo web profesional en México' }}">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ $page['props']['seo']['og_image'] ?? asset('images/og-paginaswebcreativas.jpg') }}">
+    <meta property="og:image" content="{{ $ogImage }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Páginas Web Creativas - Agencia de desarrollo web en México">
@@ -30,7 +37,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $page['props']['seo']['og_title'] ?? $page['props']['seo']['title'] ?? 'Páginas Web Creativas' }}">
     <meta name="twitter:description" content="{{ $page['props']['seo']['og_description'] ?? $page['props']['seo']['description'] ?? 'Desarrollo web profesional en México' }}">
-    <meta name="twitter:image" content="{{ $page['props']['seo']['og_image'] ?? asset('images/og-paginaswebcreativas.jpg') }}">
+    <meta name="twitter:image" content="{{ $ogImage }}">
 
     {{-- ===== FAVICONS ===== --}}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -49,7 +56,7 @@
         'logo' => 'https://paginaswebcreativas.com/images/logo.svg',
         'description' => 'Agencia de desarrollo web especializada en Laravel y React. Páginas web, tiendas online, escuelas virtuales y aplicaciones web a medida en México.',
         'telephone' => '+525526711438',
-        'email' => 'hola@rekobit.com',
+        'email' => 'contacto@paginaswebcreativas.com',
         'address' => [
             '@type' => 'PostalAddress',
             'addressLocality' => 'Ciudad de México',
@@ -113,8 +120,21 @@
     </script>
     @endif
 
-    {{-- ===== PRELOAD FUENTE ===== --}}
-    <link rel="preload" href="/fonts/Outfit-Variable.woff2" as="font" type="font/woff2" crossorigin>
+    {{-- ===== PRELOAD FUENTE (path dinámico desde Vite manifest) ===== --}}
+    @php
+        $viteManifest = [];
+        $manifestPath = public_path('build/manifest.json');
+        if (file_exists($manifestPath)) {
+            $viteManifest = json_decode(file_get_contents($manifestPath), true) ?? [];
+        }
+        $fontFile = collect($viteManifest)
+            ->filter(fn($v, $k) => str_contains($k, 'outfit-latin-wght') && isset($v['file']))
+            ->first();
+        $fontPreloadUrl = $fontFile ? '/build/' . $fontFile['file'] : null;
+    @endphp
+    @if($fontPreloadUrl)
+    <link rel="preload" href="{{ $fontPreloadUrl }}" as="font" type="font/woff2" crossorigin>
+    @endif
 
     {{-- ===== PRECONNECTS ===== --}}
     <link rel="preconnect" href="https://www.facebook.com">
@@ -134,7 +154,7 @@
             n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
             t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
             document,'script','https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '661490761316894');
+            fbq('init', '{{ env('FACEBOOK_PIXEL_ID', '661490761316894') }}');
             fbq('track', 'PageView');
         }
         if ('requestIdleCallback' in window) {
@@ -145,7 +165,7 @@
     })();
     </script>
     <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=661490761316894&ev=PageView&noscript=1"/></noscript>
+    src="https://www.facebook.com/tr?id={{ env('FACEBOOK_PIXEL_ID', '661490761316894') }}&ev=PageView&noscript=1"/></noscript>
 </head>
 <body class="bg-[#0c1222] text-[#e8edf4] font-outfit antialiased">
     @inertia
@@ -195,7 +215,7 @@
             <h2>Contacto</h2>
             <p>
                 <a href="https://wa.me/5215526711438">WhatsApp: +52 55 2671 1438</a><br>
-                Email: <a href="mailto:hola@rekobit.com">hola@rekobit.com</a> | <a href="mailto:contacto@paginaswebcreativas.com">contacto@paginaswebcreativas.com</a>
+                Email: <a href="mailto:contacto@paginaswebcreativas.com">contacto@paginaswebcreativas.com</a>
             </p>
 
             <h2>Nuestro Ecosistema</h2>
