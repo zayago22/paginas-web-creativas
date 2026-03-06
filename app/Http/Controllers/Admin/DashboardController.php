@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Briefing;
 use App\Models\BlogPost;
 use App\Models\Lead;
 use App\Models\Project;
@@ -21,6 +22,8 @@ class DashboardController extends Controller
                 'total_projects' => Project::active()->count(),
                 'total_posts' => BlogPost::published()->count(),
                 'total_testimonials' => Testimonial::active()->count(),
+                'total_briefings' => Briefing::count(),
+                'new_briefings' => Briefing::nuevo()->count(),
             ],
             'recentLeads' => Lead::recent()->limit(10)->get()->map(fn($l) => [
                 'id' => $l->id,

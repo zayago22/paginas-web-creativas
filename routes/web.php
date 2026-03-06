@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\BlogPostController as AdminBlogPostController;
 use App\Http\Controllers\Admin\LeadController as AdminLeadController;
+use App\Http\Controllers\Admin\BriefingController as AdminBriefingController;
+use App\Http\Controllers\BriefingController;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 
@@ -77,6 +79,11 @@ Route::get('/contacto', [BlogEngineController::class, 'contacto'])->name('contac
 
 // Formulario de contacto (API)
 Route::post('/api/leads', [LeadController::class, 'store'])->name('leads.store');
+
+// Briefing interactivo
+Route::get('/briefing', [BriefingController::class, 'index'])->name('briefing');
+Route::post('/api/briefings', [BriefingController::class, 'store'])->name('briefings.store');
+Route::post('/api/briefings/upload', [BriefingController::class, 'upload'])->name('briefings.upload');
 
 // Sitemap (SEO) — spatie/laravel-sitemap
 Route::get('/sitemap.xml', function () {
@@ -182,6 +189,12 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('leads', [AdminLeadController::class, 'index'])->name('leads.index');
     Route::put('leads/{lead}', [AdminLeadController::class, 'update'])->name('leads.update');
     Route::delete('leads/{lead}', [AdminLeadController::class, 'destroy'])->name('leads.destroy');
+
+    // Briefings
+    Route::get('briefings', [AdminBriefingController::class, 'index'])->name('briefings.index');
+    Route::get('briefings/{briefing}', [AdminBriefingController::class, 'show'])->name('briefings.show');
+    Route::put('briefings/{briefing}', [AdminBriefingController::class, 'update'])->name('briefings.update');
+    Route::delete('briefings/{briefing}', [AdminBriefingController::class, 'destroy'])->name('briefings.destroy');
 });
 
 /*

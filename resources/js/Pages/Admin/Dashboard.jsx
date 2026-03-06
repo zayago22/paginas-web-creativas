@@ -8,6 +8,8 @@ export default function Dashboard({ stats, recentLeads }) {
         { label: 'Artículos Blog', value: stats.total_posts, color: '#feca57', icon: '📝' },
         { label: 'Testimonios', value: stats.total_testimonials, color: '#00bfff', icon: '⭐' },
         { label: 'Total Leads', value: stats.total_leads, color: '#ff6b6b', icon: '📩' },
+        { label: 'Briefings Nuevos', value: stats.new_briefings ?? 0, color: '#6C63FF', icon: '📋' },
+        { label: 'Total Briefings', value: stats.total_briefings ?? 0, color: '#a78bfa', icon: '📑' },
     ];
 
     const statusColors = {
@@ -41,6 +43,11 @@ export default function Dashboard({ stats, recentLeads }) {
                                 <span className="ml-1 px-1.5 py-0.5 rounded-full bg-red-500 text-white text-xs font-bold">{stats.new_leads}</span>
                             )}
                         </Link>
+                        <Link href="/admin/briefings" className="text-[#94a3b8] hover:text-white transition">
+                            Briefings {(stats.new_briefings ?? 0) > 0 && (
+                                <span className="ml-1 px-1.5 py-0.5 rounded-full bg-[#6C63FF] text-white text-xs font-bold">{stats.new_briefings}</span>
+                            )}
+                        </Link>
                     </nav>
                 </div>
 
@@ -48,7 +55,7 @@ export default function Dashboard({ stats, recentLeads }) {
                     <h1 className="text-2xl font-extrabold mb-8">Dashboard</h1>
 
                     {/* Stats Grid */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
                         {statCards.map(s => (
                             <div key={s.label} className="p-5 bg-[#141d2f] border border-white/[0.06] rounded-xl">
                                 <div className="text-2xl mb-2">{s.icon}</div>
