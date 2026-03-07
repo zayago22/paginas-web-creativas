@@ -2,6 +2,7 @@ import { createInertiaApp } from '@inertiajs/react';
 import createServer from '@inertiajs/react/server';
 import ReactDOMServer from 'react-dom/server';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 createServer((page) =>
     createInertiaApp({
@@ -11,7 +12,11 @@ createServer((page) =>
         resolve: (name) =>
             resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob('./Pages/**/*.jsx')),
         setup({ App, props }) {
-            return <App {...props} />;
+            return (
+                <ThemeProvider>
+                    <App {...props} />
+                </ThemeProvider>
+            );
         },
     }),
 );

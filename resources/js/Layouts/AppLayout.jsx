@@ -1,5 +1,6 @@
 ﻿import { Link, usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
+import ThemeToggle from '../Components/ThemeToggle';
 
 export default function AppLayout({ children, title }) {
     const [scrolled, setScrolled] = useState(false);
@@ -30,11 +31,11 @@ export default function AppLayout({ children, title }) {
 
             {/* Mobile Nav Overlay */}
             {mobileOpen && (
-                <div className="fixed inset-0 bg-[#0c1222]/98 z-[999] flex flex-col items-center justify-center gap-8">
-                    <button onClick={() => setMobileOpen(false)} className="absolute top-5 right-6 text-white text-2xl">✕</button>
+                <div className="fixed inset-0 bg-white/98 dark:bg-[#0c1222]/98 z-[999] flex flex-col items-center justify-center gap-8">
+                    <button onClick={() => setMobileOpen(false)} className="absolute top-5 right-6 text-[#0a0f1e] dark:text-white text-2xl">✕</button>
                     {['servicios', 'portafolio', 'herramientas', 'precios', 'blog'].map(item => (
                         <a key={item} href={`#${item}`} onClick={() => setMobileOpen(false)}
-                           className="text-xl font-semibold text-white hover:text-[#0090ff] capitalize transition">
+                           className="text-xl font-semibold text-[#0a0f1e] dark:text-white hover:text-[#0090ff] capitalize transition">
                             {item}
                         </a>
                     ))}
@@ -42,8 +43,10 @@ export default function AppLayout({ children, title }) {
             )}
 
             {/* Navbar */}
-            <nav role="banner" aria-label="Navegación principal" className={`fixed top-0 left-0 right-0 z-[1000] py-3 transition-all duration-400
-                ${scrolled ? 'bg-[#0c1222]/85 backdrop-blur-xl border-b border-white/[0.06] py-2' : ''}`}>
+            <nav role="banner" aria-label="Navegación principal" className={`fixed top-0 left-0 right-0 z-[1000] py-3 transition-colors duration-300
+                ${scrolled
+                    ? 'bg-white/95 dark:bg-[#0c1222]/85 backdrop-blur-xl border-b border-[#e5e7eb] dark:border-white/[0.06] py-2 shadow-sm dark:shadow-none'
+                    : ''}`}>
                 <div className="max-w-[1200px] mx-auto px-6 flex items-center justify-between">
                     <Link href="/" className="flex items-center">
                         <img src="/images/logo.svg" alt="Páginas Web Creativas" className="h-20 w-auto" />
@@ -59,20 +62,26 @@ export default function AppLayout({ children, title }) {
                         ].map(([label, href]) => (
                             <li key={label}>
                                 {href.startsWith('/') ? (
-                                    <Link href={href} className="text-sm font-medium text-[#94a3b8] hover:text-white transition">{label}</Link>
+                                    <Link href={href} className="text-sm font-medium text-[#374151] dark:text-[#94a3b8] hover:text-[#0090ff] dark:hover:text-white transition-colors">{label}</Link>
                                 ) : (
-                                    <a href={href} className="text-sm font-medium text-[#94a3b8] hover:text-white transition">{label}</a>
+                                    <a href={href} className="text-sm font-medium text-[#374151] dark:text-[#94a3b8] hover:text-[#0090ff] dark:hover:text-white transition-colors">{label}</a>
                                 )}
                             </li>
                         ))}
                     </ul>
 
-                    <a href="https://wa.me/5215526711438" target="_blank" rel="noopener"
-                       className="hidden lg:block px-6 py-2.5 rounded-full bg-[#0090ff] text-white font-semibold text-sm hover:bg-[#0070d6] hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(0,144,255,.3)] transition-all">
-                        Cotizar Proyecto
-                    </a>
+                    <div className="hidden lg:flex items-center gap-3">
+                        <ThemeToggle />
+                        <a href="https://wa.me/5215526711438" target="_blank" rel="noopener"
+                           className="px-6 py-2.5 rounded-full bg-[#0090ff] text-white font-semibold text-sm hover:bg-[#0070d6] hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(0,144,255,.3)] transition-all">
+                            Cotizar Proyecto
+                        </a>
+                    </div>
 
-                    <button onClick={() => setMobileOpen(true)} className="lg:hidden text-white text-xl">☰</button>
+                    <div className="lg:hidden flex items-center gap-3">
+                        <ThemeToggle />
+                        <button onClick={() => setMobileOpen(true)} className="text-[#374151] dark:text-white text-xl">☰</button>
+                    </div>
                 </div>
             </nav>
 
@@ -82,27 +91,27 @@ export default function AppLayout({ children, title }) {
             </main>
 
             {/* Footer */}
-            <footer role="contentinfo" className="border-t border-white/[0.06] py-20 relative z-[1]">
+            <footer role="contentinfo" className="border-t border-[#e5e7eb] dark:border-white/[0.06] py-20 relative z-[1]">
                 <div className="max-w-[1200px] mx-auto px-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
                         <div>
                             <Link href="/" className="inline-flex items-center mb-5">
                                 <img src="/images/logo.svg" alt="Páginas Web Creativas" className="h-16 w-auto" />
                             </Link>
-                            <p className="text-sm text-[#94a3b8] leading-relaxed max-w-[280px] mb-5">
+                            <p className="text-sm text-[#6b7280] dark:text-[#94a3b8] leading-relaxed max-w-[280px] mb-5">
                                 Diseñamos experiencias web que convierten visitantes en clientes. +100 proyectos en México.
                             </p>
                             <div className="space-y-2">
-                                <a href="mailto:hola@rekobit.com" className="flex items-center gap-2 text-sm text-[#94a3b8] hover:text-[#0090ff] transition">
+                                <a href="mailto:hola@rekobit.com" className="flex items-center gap-2 text-sm text-[#6b7280] dark:text-[#94a3b8] hover:text-[#0090ff] transition-colors">
                                     <span className="text-[#0090ff]">✉</span> hola@rekobit.com
                                 </a>
-                                <a href="mailto:contacto@paginaswebcreativas.com" className="flex items-center gap-2 text-sm text-[#94a3b8] hover:text-[#0090ff] transition">
+                                <a href="mailto:contacto@paginaswebcreativas.com" className="flex items-center gap-2 text-sm text-[#6b7280] dark:text-[#94a3b8] hover:text-[#0090ff] transition-colors">
                                     <span className="text-[#0090ff]">✉</span> contacto@paginaswebcreativas.com
                                 </a>
-                                <a href="tel:5526711438" className="flex items-center gap-2 text-sm text-[#94a3b8] hover:text-[#0090ff] transition">
+                                <a href="tel:5526711438" className="flex items-center gap-2 text-sm text-[#6b7280] dark:text-[#94a3b8] hover:text-[#0090ff] transition-colors">
                                     <span className="text-[#0090ff]">✆</span> 55 2671 1438
                                 </a>
-                                <span className="flex items-center gap-2 text-sm text-[#94a3b8]">
+                                <span className="flex items-center gap-2 text-sm text-[#6b7280] dark:text-[#94a3b8]">
                                     <span className="text-[#0090ff]">⊙</span> Ciudad de México
                                 </span>
                             </div>
@@ -113,19 +122,19 @@ export default function AppLayout({ children, title }) {
                             { title: 'Empresa', links: [['Portafolio', '#portafolio'], ['Blog', '/blog'], ['Contacto', '#contacto'], ['Privacidad', '#']] },
                         ].map(col => (
                             <div key={col.title}>
-                                <h5 className="text-xs font-bold uppercase tracking-wider mb-5">{col.title}</h5>
+                                <h5 className="text-xs font-bold uppercase tracking-wider text-[#0a0f1e] dark:text-[#f1f5f9] mb-5">{col.title}</h5>
                                 {col.links.map(([label, href]) => (
-                                    <a key={label} href={href} className="block text-sm text-[#94a3b8] py-1.5 hover:text-[#0090ff] transition">{label}</a>
+                                    <a key={label} href={href} className="block text-sm text-[#6b7280] dark:text-[#94a3b8] py-1.5 hover:text-[#0090ff] transition-colors">{label}</a>
                                 ))}
                             </div>
                         ))}
                     </div>
-                    <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/[0.06] text-xs text-[#64748b]">
+                    <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-[#e5e7eb] dark:border-white/[0.06] text-xs text-[#9ca3af] dark:text-[#64748b]">
                         <span>© 2026 Páginas Web Creativas. Todos los derechos reservados.</span>
                         <div className="flex items-center gap-4 mt-4 md:mt-0">
-                            <a href="#" target="_blank" rel="noopener" className="hover:text-[#0090ff] transition">Facebook</a>
-                            <a href="#" target="_blank" rel="noopener" className="hover:text-[#0090ff] transition">Instagram</a>
-                            <a href="https://wa.me/5215526711438?text=Hola! Me interesa un proyecto web" target="_blank" rel="noopener" className="hover:text-[#25d366] transition">WhatsApp</a>
+                            <a href="#" target="_blank" rel="noopener" className="hover:text-[#0090ff] transition-colors">Facebook</a>
+                            <a href="#" target="_blank" rel="noopener" className="hover:text-[#0090ff] transition-colors">Instagram</a>
+                            <a href="https://wa.me/5215526711438?text=Hola! Me interesa un proyecto web" target="_blank" rel="noopener" className="hover:text-[#25d366] transition-colors">WhatsApp</a>
                         </div>
                     </div>
                 </div>

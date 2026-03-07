@@ -12,15 +12,15 @@ export default function ServicesSection({ services, whatsappBase }) {
                 <div className="grid md:grid-cols-3 gap-7 mt-16">
                     {services.map((svc, i) => (
                         <Reveal key={svc.id} delay={i * 120}>
-                            <div className={`text-left p-10 bg-[#141d2f] border rounded-2xl hover:-translate-y-1 transition-all
-                                ${svc.featured ? 'border-[#0090ff]/30 bg-gradient-to-b from-[#0090ff]/6 to-[#141d2f]' : 'border-white/[0.06]'}`}>
+                            <div className={`text-left p-10 bg-[var(--bg-card)] border rounded-2xl hover:-translate-y-1 transition-all
+                                ${svc.featured ? 'border-[#0090ff]/30 bg-gradient-to-b from-[#0090ff]/6 to-[var(--bg-card)]' : 'border-[var(--border-color)]'}`}>
                                 <div className="text-3xl mb-5">{svc.icon}</div>
                                 <h3 className="text-xl font-bold mb-2">{svc.name}</h3>
-                                <div className="text-3xl font-black mb-2">${Number(svc.price).toLocaleString()} <span className="text-sm font-normal text-[#94a3b8]">{svc.price_label}</span></div>
-                                <p className="text-sm text-[#94a3b8] mb-5 leading-relaxed">{svc.description}</p>
+                                <div className="text-3xl font-black mb-2">${Number(svc.price).toLocaleString()} <span className="text-sm font-normal text-[var(--text-secondary)]">{svc.price_label}</span></div>
+                                <p className="text-sm text-[var(--text-secondary)] mb-5 leading-relaxed">{svc.description}</p>
                                 <ul className="space-y-2.5 mb-6">
                                     {(svc.features || []).map((f, fi) => (
-                                        <li key={fi} className="flex items-start gap-2.5 text-sm text-[#94a3b8]">
+                                        <li key={fi} className="flex items-start gap-2.5 text-sm text-[var(--text-secondary)]">
                                             <CheckIcon /> {f}
                                         </li>
                                     ))}
@@ -30,7 +30,7 @@ export default function ServicesSection({ services, whatsappBase }) {
                                    className={`block w-full text-center py-3.5 rounded-lg font-semibold text-sm transition-all
                                        ${svc.featured
                                            ? 'bg-gradient-to-r from-[#0090ff] to-[#00bfff] text-white hover:shadow-[0_8px_30px_rgba(0,144,255,.3)]'
-                                           : 'border border-white/[0.06] text-white hover:bg-[#0090ff] hover:border-[#0090ff]'}`}>
+                                           : 'border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[#0090ff] hover:border-[#0090ff] hover:text-white'}`}>
                                     Solicitar Cotización
                                 </a>
                             </div>

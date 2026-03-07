@@ -10,7 +10,7 @@ export default function CtaSection({ whatsappBase }) {
                         <h2 className="text-3xl md:text-4xl font-extrabold mb-4 relative">
                             Tu competencia ya tiene<br /><GradientText>presencia online</GradientText>
                         </h2>
-                        <p className="text-lg text-[#94a3b8] mb-8 max-w-[500px] mx-auto relative">
+                        <p className="text-lg text-[var(--text-secondary)] mb-8 max-w-[500px] mx-auto relative">
                             No te quedes atrás. Cotiza tu proyecto hoy y empieza a captar clientes.
                         </p>
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative">
@@ -20,7 +20,7 @@ export default function CtaSection({ whatsappBase }) {
                             </a>
                             <a href={`${whatsappBase}?text=${encodeURIComponent('Hola! Quiero cotizar mi proyecto web')}`}
                                target="_blank" rel="noopener"
-                               className="px-9 py-4 rounded-full border border-white/[0.06] text-white font-semibold text-base hover:border-[#00e4b8] hover:bg-[#00e4b8]/5 transition-all">
+                               className="px-9 py-4 rounded-full border border-[var(--border-color)] text-[var(--text-primary)] font-semibold text-base hover:border-[#00e4b8] hover:bg-[#00e4b8]/5 transition-all">
                                 💬 WhatsApp Directo
                             </a>
                         </div>

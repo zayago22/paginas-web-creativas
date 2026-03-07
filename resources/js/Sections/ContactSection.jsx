@@ -47,10 +47,10 @@ function ContactForm({ services }) {
 
     if (status === 'success') {
         return (
-            <div className="p-10 bg-[#141d2f] border border-[#00e4b8]/20 rounded-2xl text-center">
+            <div className="p-10 bg-[var(--bg-card)] border border-[#00e4b8]/20 rounded-2xl text-center">
                 <div className="w-16 h-16 rounded-full bg-[#00e4b8]/10 flex items-center justify-center text-3xl mx-auto mb-5">✓</div>
                 <h3 className="text-xl font-bold mb-2">¡Mensaje enviado!</h3>
-                <p className="text-[#94a3b8] mb-6">Te contactaremos en menos de 24 horas.</p>
+                <p className="text-[var(--text-secondary)] mb-6">Te contactaremos en menos de 24 horas.</p>
                 <button onClick={() => setStatus('idle')} className="text-sm text-[#0090ff] font-semibold hover:underline">
                     Enviar otro mensaje
                 </button>
@@ -59,11 +59,11 @@ function ContactForm({ services }) {
     }
 
     const inputClass = (field) =>
-        `w-full px-5 py-3.5 bg-[#0c1222] border rounded-xl text-sm text-white placeholder-[#4a5568] outline-none transition-colors
-         ${errors[field] ? 'border-red-500/50 focus:border-red-500' : 'border-white/[0.06] focus:border-[#0090ff]'}`;
+        `w-full px-5 py-3.5 bg-[var(--bg-secondary)] border rounded-xl text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none transition-colors
+         ${errors[field] ? 'border-red-500/50 focus:border-red-500' : 'border-[var(--border-color)] focus:border-[#0090ff]'}`;
 
     return (
-        <form onSubmit={handleSubmit} className="p-8 md:p-10 bg-[#141d2f] border border-white/[0.06] rounded-2xl space-y-5">
+        <form onSubmit={handleSubmit} className="p-8 md:p-10 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl space-y-5">
             <div className="grid sm:grid-cols-2 gap-5">
                 <div>
                     <label className="block text-sm font-medium mb-2">Nombre *</label>
@@ -93,13 +93,13 @@ function ContactForm({ services }) {
                     <select value={form.service_interest}
                             onChange={e => updateField('service_interest', e.target.value)}
                             className={`${inputClass('service_interest')} appearance-none cursor-pointer`}>
-                        <option value="" className="bg-[#0c1222]">Seleccionar...</option>
+                        <option value="" className="bg-[var(--bg-secondary)]">Seleccionar...</option>
                         {services.map(svc => (
-                            <option key={svc.slug} value={svc.slug} className="bg-[#0c1222]">
+                            <option key={svc.slug} value={svc.slug} className="bg-[var(--bg-secondary)]">
                                 {svc.name} — ${Number(svc.price).toLocaleString()} MXN
                             </option>
                         ))}
-                        <option value="otro" className="bg-[#0c1222]">Otro / No estoy seguro</option>
+                        <option value="otro" className="bg-[var(--bg-secondary)]">¡Otro / No estoy seguro!</option>
                     </select>
                 </div>
             </div>
@@ -129,7 +129,7 @@ function ContactForm({ services }) {
                 <p className="text-red-400 text-sm text-center">Hubo un error. Intenta de nuevo o contáctanos por WhatsApp.</p>
             )}
 
-            <p className="text-xs text-[#4a5568] text-center">
+            <p className="text-xs text-[var(--text-muted)] text-center">
                 Al enviar aceptas ser contactado. No compartimos tu información.
             </p>
         </form>
@@ -146,7 +146,7 @@ export default function ContactSection({ services, whatsappBase }) {
                         <h2 className="text-3xl md:text-4xl font-extrabold mb-4">
                             ¿Listo para <GradientText>tu nuevo sitio web</GradientText>?
                         </h2>
-                        <p className="text-[#94a3b8] text-lg leading-relaxed mb-10">
+                        <p className="text-[var(--text-secondary)] text-lg leading-relaxed mb-10">
                             Cuéntanos sobre tu proyecto y te contactaremos en menos de 24 horas con una propuesta personalizada.
                         </p>
 
@@ -162,18 +162,18 @@ export default function ContactSection({ services, whatsappBase }) {
                                     </div>
                                     <div>
                                         <h4 className="font-semibold group-hover:text-[#0090ff] transition">{item.title}</h4>
-                                        <p className="text-sm text-[#64748b]">{item.desc}</p>
+                                        <p className="text-sm text-[var(--text-muted)]">{item.desc}</p>
                                     </div>
                                 </a>
                             ))}
                         </div>
 
-                        <div className="flex items-center gap-3 mt-10 pt-8 border-t border-white/[0.06]">
+                        <div className="flex items-center gap-3 mt-10 pt-8 border-t border-[var(--border-color)]">
                             <div className="flex -space-x-2">
                                 {['MR', 'CL', 'AF'].map((initials, i) => {
                                     const colors = ['from-[#0090ff] to-[#00bfff]', 'from-[#00e4b8] to-[#00a86b]', 'from-[#7c5cfc] to-[#a78bfa]'];
                                     return (
-                                        <div key={i} className={`w-9 h-9 rounded-full bg-gradient-to-br ${colors[i]} flex items-center justify-center text-[.65rem] font-bold text-white border-2 border-[#0c1222]`}>
+                                        <div key={i} className={`w-9 h-9 rounded-full bg-gradient-to-br ${colors[i]} flex items-center justify-center text-[.65rem] font-bold text-white border-2 border-[var(--bg-primary)]`}>
                                             {initials}
                                         </div>
                                     );

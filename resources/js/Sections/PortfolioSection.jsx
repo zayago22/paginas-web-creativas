@@ -12,12 +12,12 @@ export default function PortfolioSection({ projects }) {
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-16">
                     {projects.map((proj, i) => (
                         <Reveal key={proj.id} delay={i * 100}>
-                            <Link href={`/portafolio/${proj.slug}`} className="group relative aspect-[4/3] rounded-2xl overflow-hidden bg-[#141d2f] border border-white/[0.06] block cursor-pointer">
+                            <Link href={`/portafolio/${proj.slug}`} className="group relative aspect-[4/3] rounded-2xl overflow-hidden bg-[var(--bg-card)] border border-[var(--border-color)] block cursor-pointer">
                                 {proj.image_url ? (
                                     <img src={proj.image_url} alt={proj.title} loading="lazy" decoding="async"
                                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 ) : (
-                                    <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-[#64748b] text-sm">
+                                    <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-[var(--text-muted)] text-sm">
                                         <svg className="w-8 h-8 opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                                             <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" />
                                         </svg>

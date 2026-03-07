@@ -5,44 +5,84 @@
 
 @import "tailwindcss";
 
+/* Tailwind v4 — class-based dark mode strategy */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ================================
-   CUSTOM PROPERTIES
+   THEME — CSS CUSTOM PROPERTIES
    ================================ */
+
+/* LIGHT MODE (default) */
 :root {
+    /* Brand */
     --blue: #0090ff;
     --cyan: #00bfff;
     --teal: #00e4b8;
     --violet: #7c5cfc;
-    --bg: #0c1222;
+
+    /* Backgrounds */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8faff;
+    --bg-card: #f1f5fb;
+
+    /* Text — min contrast ratios per WCAG AA */
+    --text-primary: #0a0f1e;       /* ≥7:1 on white */
+    --text-secondary: #374151;     /* ≥4.5:1 on white */
+    --text-muted: #6b7280;
+
+    /* Borders & shadows */
+    --border-color: #e5e7eb;
+    --shadow-color: rgba(0, 144, 255, 0.12);
+
+    /* Accent */
+    --accent-primary: #0090ff;
+    --accent-hover: #0070dd;
+
+    /* Legacy aliases */
+    --bg: #ffffff;
+    --bg-card-legacy: #f1f5fb;
+    --text: #0a0f1e;
+    --text-dim: #6b7280;
+    --border: #e5e7eb;
+
+    /* Scrollbar */
+    --scrollbar-bg: #f1f5f9;
+    --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+    --scrollbar-thumb-hover: rgba(0, 0, 0, 0.25);
+}
+
+/* DARK MODE */
+.dark {
+    /* Backgrounds — current site palette */
+    --bg-primary: #0c1222;
+    --bg-secondary: #111827;
     --bg-card: #141d2f;
+
+    /* Text */
+    --text-primary: #f1f5f9;       /* max contrast on dark */
+    --text-secondary: #94a3b8;     /* ≥4.5:1 on dark bg */
+    --text-muted: #64748b;
+
+    /* Borders & shadows */
+    --border-color: rgba(255, 255, 255, 0.08);
+    --shadow-color: rgba(0, 228, 184, 0.15);
+
+    /* Accent */
+    --accent-primary: #00e4b8;
+    --accent-hover: #00bfff;
+
+    /* Legacy aliases */
+    --bg: #0c1222;
+    --bg-card-legacy: #141d2f;
     --text: #e8edf4;
-    --text-muted: #94a3b8;
     --text-dim: #64748b;
     --border: rgba(255, 255, 255, 0.08);
-}
 
-/* ================================
-   BASE
-   ================================ */
-html {
-    scroll-behavior: smooth;
+    /* Scrollbar */
+    --scrollbar-bg: #0c1222;
+    --scrollbar-thumb: rgba(255, 255, 255, 0.1);
+    --scrollbar-thumb-hover: rgba(255, 255, 255, 0.2);
 }
-
-body {
-    font-family: 'Outfit Variable', 'Outfit', sans-serif;
-    -webkit-font-smoothing: antialiased;
-}
-
-::selection {
-    background: rgba(0, 144, 255, 0.3);
-    color: #fff;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.2); }
 
 /* ================================
    ANIMATIONS
@@ -178,31 +218,18 @@ body {
 
 
 /* ================================
-   CUSTOM PROPERTIES
-   ================================ */
-:root {
-    --blue: #0090ff;
-    --cyan: #00bfff;
-    --teal: #00e4b8;
-    --violet: #7c5cfc;
-    --bg: #0c1222;
-    --bg-card: #141d2f;
-    --text: #e8edf4;
-    --text-muted: #94a3b8;
-    --text-dim: #64748b;
-    --border: rgba(255, 255, 255, 0.08);
-}
-
-/* ================================
    BASE
    ================================ */
 html {
     scroll-behavior: smooth;
+    background-color: var(--bg-primary);
 }
 
 body {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Outfit Variable', 'Outfit', sans-serif;
     -webkit-font-smoothing: antialiased;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
 }
 
 ::selection {
@@ -212,72 +239,25 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.2); }
+::-webkit-scrollbar-track { background: var(--scrollbar-bg); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
 
 /* ================================
-   ANIMATIONS
+   GLOBAL THEME TRANSITION
    ================================ */
-@keyframes fade-in-up {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+
+/* Smooth transition for theme toggle (background, text, borders) */
+html, body, *:not(svg):not(svg *):not([data-reveal]):not([data-reveal] *) {
+    transition:
+        background-color 300ms ease,
+        color 300ms ease,
+        border-color 300ms ease,
+        box-shadow 300ms ease;
 }
 
-@keyframes fade-in-down {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes float {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(40px, -30px) scale(1.1); }
-    66% { transform: translate(-20px, 40px) scale(0.95); }
-}
-
-@keyframes float-delayed {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(-30px, 20px) scale(1.05); }
-    66% { transform: translate(25px, -35px) scale(0.98); }
-}
-
-@keyframes bounce-wa {
-    0%, 100% { transform: translateY(0); }
-    10% { transform: translateY(-8px); }
-    20% { transform: translateY(0); }
-}
-
-.animate-fade-in-up {
-    animation: fade-in-up 0.8s ease both;
-}
-
-.animate-fade-in-up-delayed {
-    animation: fade-in-up 0.8s ease 0.2s both;
-}
-
-.animate-fade-in-down {
-    animation: fade-in-down 0.8s ease both;
-}
-
-.animate-float {
-    animation: float 20s infinite ease-in-out;
-}
-
-.animate-float-delayed {
-    animation: float-delayed 22s infinite ease-in-out;
-}
-
-.animate-float-slow {
-    animation: float 25s infinite ease-in-out 5s;
-}
-
-.animate-bounce-wa {
-    animation: bounce-wa 3s infinite;
-}
-
-/* ================================
-   FONT FAMILY UTILITY
-   ================================ */
-.font-outfit {
-    font-family: 'Outfit', sans-serif;
+/* Exception — no theme transition on animations or SVGs */
+.no-transition,
+.no-transition * {
+    transition: none !important;
 }
