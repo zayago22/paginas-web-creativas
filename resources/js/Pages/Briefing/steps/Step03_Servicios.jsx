@@ -19,9 +19,9 @@ export default function Step03_Servicios({ data, onChange, errors }) {
     };
 
     const inputStyle = (error) => ({
-        background: '#1C1C28',
-        border: `1.5px solid ${error ? '#F87171' : '#2A2A3A'}`,
-        color: '#F0F0F5',
+        background: 'var(--briefing-surface)',
+        border: `1.5px solid ${error ? '#F87171' : 'var(--briefing-border)'}`,
+        color: 'var(--briefing-text)',
         fontSize: '16px',
         fontFamily: "'DM Sans', sans-serif",
         borderRadius: '10px',
@@ -41,7 +41,7 @@ export default function Step03_Servicios({ data, onChange, errors }) {
                 <div
                     key={idx}
                     className="p-4 rounded-2xl space-y-3"
-                    style={{ background: '#13131A', border: '1px solid #2A2A3A' }}
+                    style={{ background: 'var(--briefing-card)', border: '1px solid var(--briefing-border)' }}
                 >
                     <div className="flex items-center justify-between mb-1">
                         <span className="text-xs font-semibold" style={{ color: '#6C63FF', fontFamily: "'Syne', sans-serif" }}>
@@ -64,7 +64,7 @@ export default function Step03_Servicios({ data, onChange, errors }) {
                         value={svc.nombre}
                         onChange={e => update(idx, 'nombre', e.target.value)}
                         onFocus={e => { e.target.style.borderColor = '#6C63FF'; }}
-                        onBlur={e => { e.target.style.borderColor = '#2A2A3A'; }}
+                        onBlur={e => { e.target.style.borderColor = 'var(--briefing-border)'; }}
                     />
                     <input
                         style={inputStyle(false)}
@@ -72,7 +72,7 @@ export default function Step03_Servicios({ data, onChange, errors }) {
                         value={svc.descripcion}
                         onChange={e => update(idx, 'descripcion', e.target.value)}
                         onFocus={e => { e.target.style.borderColor = '#6C63FF'; }}
-                        onBlur={e => { e.target.style.borderColor = '#2A2A3A'; }}
+                        onBlur={e => { e.target.style.borderColor = 'var(--briefing-border)'; }}
                     />
                 </div>
             ))}
@@ -82,9 +82,9 @@ export default function Step03_Servicios({ data, onChange, errors }) {
                     type="button"
                     onClick={add}
                     className="flex items-center gap-2 px-4 py-3 rounded-xl w-full transition justify-center"
-                    style={{ border: '1.5px dashed #2A2A3A', color: '#8B8B9E', fontSize: '14px' }}
+                    style={{ border: '1.5px dashed var(--briefing-border)', color: 'var(--briefing-text-muted)', fontSize: '14px' }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = '#6C63FF'; e.currentTarget.style.color = '#6C63FF'; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#2A2A3A'; e.currentTarget.style.color = '#8B8B9E'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--briefing-border)'; e.currentTarget.style.color = 'var(--briefing-text-muted)'; }}
                 >
                     <Plus size={16} />
                     Agregar otro servicio

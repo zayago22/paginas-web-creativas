@@ -4,7 +4,7 @@ export default function NavigationButtons({ onBack, onNext, isFirst, isLast, isL
     return (
         <div
             className="sticky bottom-0 left-0 right-0 z-40 py-4 px-4"
-            style={{ background: 'linear-gradient(to top, #0A0A0F 70%, transparent)', backdropFilter: 'blur(4px)' }}
+            style={{ background: 'linear-gradient(to top, var(--briefing-bg) 70%, transparent)', backdropFilter: 'blur(4px)' }}
         >
             <div className="max-w-2xl mx-auto flex gap-3">
                 {/* Botón Atrás (ghost) */}
@@ -15,12 +15,12 @@ export default function NavigationButtons({ onBack, onNext, isFirst, isLast, isL
                         disabled={isLoading}
                         className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 w-full sm:w-auto"
                         style={{
-                            border: '1.5px solid #2A2A3A',
-                            color: '#8B8B9E',
+                            border: '1.5px solid var(--briefing-border)',
+                            color: 'var(--briefing-text-muted)',
                             background: 'transparent',
                         }}
-                        onMouseEnter={e => { e.currentTarget.style.borderColor = '#6C63FF'; e.currentTarget.style.color = '#F0F0F5'; }}
-                        onMouseLeave={e => { e.currentTarget.style.borderColor = '#2A2A3A'; e.currentTarget.style.color = '#8B8B9E'; }}
+                        onMouseEnter={e => { e.currentTarget.style.borderColor = '#6C63FF'; e.currentTarget.style.color = 'var(--briefing-text)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--briefing-border)'; e.currentTarget.style.color = 'var(--briefing-text-muted)'; }}
                     >
                         <ArrowLeft size={16} />
                         Atrás

@@ -49,6 +49,15 @@
     --scrollbar-bg: #f1f5f9;
     --scrollbar-thumb: rgba(0, 0, 0, 0.15);
     --scrollbar-thumb-hover: rgba(0, 0, 0, 0.25);
+
+    /* ── Briefing (Light) ── */
+    --briefing-bg: #f5f7ff;
+    --briefing-card: #ffffff;
+    --briefing-surface: #eef1f8;
+    --briefing-text: #0a0f1e;
+    --briefing-text-muted: #5a5f75;
+    --briefing-text-dim: #9ca3af;
+    --briefing-border: #d1d5e8;
 }
 
 /* DARK MODE */
@@ -82,6 +91,15 @@
     --scrollbar-bg: #0c1222;
     --scrollbar-thumb: rgba(255, 255, 255, 0.1);
     --scrollbar-thumb-hover: rgba(255, 255, 255, 0.2);
+
+    /* ── Briefing (Dark) ── */
+    --briefing-bg: #0A0A0F;
+    --briefing-card: #13131A;
+    --briefing-surface: #1C1C28;
+    --briefing-text: #F0F0F5;
+    --briefing-text-muted: #8B8B9E;
+    --briefing-text-dim: #4A4A5A;
+    --briefing-border: #2A2A3A;
 }
 
 /* ================================

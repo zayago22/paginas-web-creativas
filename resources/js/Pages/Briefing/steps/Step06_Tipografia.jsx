@@ -4,14 +4,14 @@ const Radio = ({ label, value, checked, onChange }) => (
         onClick={() => onChange(value)}
         className="flex items-center gap-3 px-5 py-4 rounded-xl transition-all duration-200 text-left"
         style={{
-            border: `1.5px solid ${checked ? '#6C63FF' : '#2A2A3A'}`,
-            background: checked ? 'rgba(108,99,255,0.1)' : '#1C1C28',
-            color: checked ? '#F0F0F5' : '#8B8B9E',
+            border: `1.5px solid ${checked ? '#6C63FF' : 'var(--briefing-border)'}`,
+            background: checked ? 'rgba(108,99,255,0.1)' : 'var(--briefing-surface)',
+            color: checked ? 'var(--briefing-text)' : 'var(--briefing-text-muted)',
         }}
     >
         <span
             className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition"
-            style={{ borderColor: checked ? '#6C63FF' : '#2A2A3A' }}
+            style={{ borderColor: checked ? '#6C63FF' : 'var(--briefing-border)' }}
         >
             {checked && <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#6C63FF' }} />}
         </span>
@@ -33,7 +33,7 @@ export default function Step06_Tipografia({ data, onChange, errors }) {
 
             {tieneFuentes === 'si' && (
                 <div className="space-y-1.5">
-                    <label className="block text-sm font-medium" style={{ color: '#8B8B9E' }}>
+                    <label className="block text-sm font-medium" style={{ color: 'var(--briefing-text-muted)' }}>
                         ¿Cuáles son?
                     </label>
                     <input
@@ -43,14 +43,14 @@ export default function Step06_Tipografia({ data, onChange, errors }) {
                         placeholder="Ej: Montserrat, Helvetica, Gotham..."
                         className="w-full px-4 py-3.5 rounded-xl outline-none transition"
                         style={{
-                            background: '#1C1C28',
-                            border: '1.5px solid #2A2A3A',
-                            color: '#F0F0F5',
+                            background: 'var(--briefing-surface)',
+                            border: '1.5px solid var(--briefing-border)',
+                            color: 'var(--briefing-text)',
                             fontSize: '16px',
                             fontFamily: "'DM Sans', sans-serif",
                         }}
                         onFocus={e => { e.target.style.borderColor = '#6C63FF'; }}
-                        onBlur={e => { e.target.style.borderColor = '#2A2A3A'; }}
+                        onBlur={e => { e.target.style.borderColor = 'var(--briefing-border)'; }}
                     />
                 </div>
             )}

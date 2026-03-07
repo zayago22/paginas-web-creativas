@@ -12,10 +12,10 @@ export default function BriefingLayout({ children, meta = {} }) {
                 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
             </Head>
 
-            {/* Fondo oscuro sólido */}
+            {/* Fondo con soporte de tema */}
             <div
-                style={{ background: '#0A0A0F', minHeight: '100vh', fontFamily: "'DM Sans', sans-serif" }}
-                className="text-[#F0F0F5]"
+                style={{ background: 'var(--briefing-bg)', minHeight: '100vh', fontFamily: "'DM Sans', sans-serif", transition: 'background 300ms ease' }}
+                className="text-[var(--briefing-text)]"
             >
                 {children}
             </div>

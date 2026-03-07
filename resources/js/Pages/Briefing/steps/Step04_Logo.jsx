@@ -11,7 +11,7 @@ export default function Step04_Logo({ data, onChange, errors }) {
                 skipped={data.logoSkipped || false}
                 onSkipToggle={() => onChange({ ...data, logoSkipped: !data.logoSkipped, logoUrl: null, logoName: null })}
             />
-            <p className="text-xs text-center" style={{ color: '#4A4A5A' }}>
+            <p className="text-xs text-center" style={{ color: 'var(--briefing-text-dim)' }}>
                 Formatos aceptados: PNG, SVG, JPG, PDF · Máximo 5MB
             </p>
         </div>

@@ -17,12 +17,12 @@ const Radio = ({ label, value, checked, onChange }) => (
     <button type="button" onClick={() => onChange(value)}
         className="flex items-center gap-3 px-5 py-4 rounded-xl transition-all duration-200 text-left"
         style={{
-            border: `1.5px solid ${checked ? '#6C63FF' : '#2A2A3A'}`,
-            background: checked ? 'rgba(108,99,255,0.1)' : '#1C1C28',
-            color: checked ? '#F0F0F5' : '#8B8B9E',
+            border: `1.5px solid ${checked ? '#6C63FF' : 'var(--briefing-border)'}`,
+            background: checked ? 'rgba(108,99,255,0.1)' : 'var(--briefing-surface)',
+            color: checked ? 'var(--briefing-text)' : 'var(--briefing-text-muted)',
         }}>
         <span className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
-            style={{ borderColor: checked ? '#6C63FF' : '#2A2A3A' }}>
+            style={{ borderColor: checked ? '#6C63FF' : 'var(--briefing-border)' }}>
             {checked && <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#6C63FF' }} />}
         </span>
         <span className="font-medium text-sm">{label}</span>
@@ -53,7 +53,7 @@ export default function Step08_NuevaWeb({ data, onChange, errors }) {
         <div className="space-y-6">
             {/* Tipo de sitio */}
             <div className="space-y-2">
-                <p className="text-sm font-medium" style={{ color: '#8B8B9E' }}>
+                <p className="text-sm font-medium" style={{ color: 'var(--briefing-text-muted)' }}>
                     Tipo de sitio <span style={{ color: '#F87171' }}>*</span>
                 </p>
                 {errors?.tipo && <p className="text-xs" style={{ color: '#F87171' }}>⚠ {errors.tipo}</p>}
@@ -65,14 +65,14 @@ export default function Step08_NuevaWeb({ data, onChange, errors }) {
                             onClick={() => update('tipo', t.label)}
                             className="flex items-center gap-3 p-4 rounded-xl transition-all duration-200 text-left"
                             style={{
-                                border: `1.5px solid ${w.tipo === t.label ? '#6C63FF' : '#2A2A3A'}`,
-                                background: w.tipo === t.label ? 'rgba(108,99,255,0.12)' : '#13131A',
+                                border: `1.5px solid ${w.tipo === t.label ? '#6C63FF' : 'var(--briefing-border)'}`,
+                                background: w.tipo === t.label ? 'rgba(108,99,255,0.12)' : 'var(--briefing-card)',
                             }}
                         >
                             <span style={{ fontSize: '22px' }}>{t.icon}</span>
                             <div>
-                                <p className="font-semibold text-sm" style={{ color: w.tipo === t.label ? '#F0F0F5' : '#8B8B9E' }}>{t.label}</p>
-                                {t.desc && <p className="text-xs" style={{ color: '#4A4A5A' }}>{t.desc}</p>}
+                                <p className="font-semibold text-sm" style={{ color: w.tipo === t.label ? 'var(--briefing-text)' : 'var(--briefing-text-muted)' }}>{t.label}</p>
+                                {t.desc && <p className="text-xs" style={{ color: 'var(--briefing-text-dim)' }}>{t.desc}</p>}
                             </div>
                         </button>
                     ))}
@@ -81,7 +81,7 @@ export default function Step08_NuevaWeb({ data, onChange, errors }) {
 
             {/* Páginas */}
             <div className="space-y-2">
-                <p className="text-sm font-medium" style={{ color: '#8B8B9E' }}>
+                <p className="text-sm font-medium" style={{ color: 'var(--briefing-text-muted)' }}>
                     ¿Qué páginas necesitas? <span style={{ color: '#F87171' }}>*</span>
                 </p>
                 {errors?.paginas && <p className="text-xs" style={{ color: '#F87171' }}>⚠ {errors.paginas}</p>}
@@ -92,9 +92,9 @@ export default function Step08_NuevaWeb({ data, onChange, errors }) {
                             <button key={p} type="button" onClick={() => togglePagina(p)}
                                 className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm transition"
                                 style={{
-                                    border: `1.5px solid ${checked ? '#6C63FF' : '#2A2A3A'}`,
-                                    background: checked ? 'rgba(108,99,255,0.1)' : '#1C1C28',
-                                    color: checked ? '#F0F0F5' : '#8B8B9E',
+                                    border: `1.5px solid ${checked ? '#6C63FF' : 'var(--briefing-border)'}`,
+                                    background: checked ? 'rgba(108,99,255,0.1)' : 'var(--briefing-surface)',
+                                    color: checked ? 'var(--briefing-text)' : 'var(--briefing-text-muted)',
                                 }}>
                                 <span style={{ fontSize: '14px' }}>{checked ? '☑' : '☐'}</span>
                                 {p}
@@ -111,13 +111,13 @@ export default function Step08_NuevaWeb({ data, onChange, errors }) {
                         onKeyDown={e => e.key === 'Enter' && addOtroPagina()}
                         placeholder="Otra página..."
                         className="flex-1 px-3 py-2.5 rounded-lg text-sm outline-none transition"
-                        style={{ background: '#1C1C28', border: '1.5px solid #2A2A3A', color: '#F0F0F5', fontSize: '15px' }}
+                        style={{ background: 'var(--briefing-surface)', border: '1.5px solid var(--briefing-border)', color: 'var(--briefing-text)', fontSize: '15px' }}
                         onFocus={e => { e.target.style.borderColor = '#6C63FF'; }}
-                        onBlur={e => { e.target.style.borderColor = '#2A2A3A'; }}
+                        onBlur={e => { e.target.style.borderColor = 'var(--briefing-border)'; }}
                     />
                     <button type="button" onClick={addOtroPagina}
                         className="px-4 py-2.5 rounded-lg text-sm font-semibold transition"
-                        style={{ background: '#1C1C28', border: '1.5px solid #2A2A3A', color: '#6C63FF' }}>
+                        style={{ background: 'var(--briefing-surface)', border: '1.5px solid var(--briefing-border)', color: '#6C63FF' }}>
                         + Agregar
                     </button>
                 </div>
@@ -125,7 +125,7 @@ export default function Step08_NuevaWeb({ data, onChange, errors }) {
 
             {/* Textos */}
             <div className="space-y-2">
-                <p className="text-sm font-medium" style={{ color: '#8B8B9E' }}>
+                <p className="text-sm font-medium" style={{ color: 'var(--briefing-text-muted)' }}>
                     ¿Tienes los textos listos? <span style={{ color: '#F87171' }}>*</span>
                 </p>
                 {errors?.textos && <p className="text-xs" style={{ color: '#F87171' }}>⚠ {errors.textos}</p>}

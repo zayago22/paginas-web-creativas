@@ -6,7 +6,7 @@ const InputField = ({ label, type = 'text', value, onChange, error, placeholder,
 
     return (
         <div className="space-y-1.5">
-            <label className="block text-sm font-medium" style={{ color: '#8B8B9E' }}>
+            <label className="block text-sm font-medium" style={{ color: 'var(--briefing-text-muted)' }}>
                 {label} <span style={{ color: '#F87171' }}>*</span>
             </label>
             <input
@@ -17,15 +17,15 @@ const InputField = ({ label, type = 'text', value, onChange, error, placeholder,
                 placeholder={placeholder}
                 className="w-full px-4 py-3.5 rounded-xl transition-all duration-200 outline-none"
                 style={{
-                    background: '#1C1C28',
-                    border: `1.5px solid ${error ? '#F87171' : '#2A2A3A'}`,
-                    color: '#F0F0F5',
+                    background: 'var(--briefing-surface)',
+                    border: `1.5px solid ${error ? '#F87171' : 'var(--briefing-border)'}`,
+                    color: 'var(--briefing-text)',
                     fontSize: '16px',
                     fontFamily: "'DM Sans', sans-serif",
                     boxShadow: error ? '0 0 0 3px rgba(248,113,113,0.15)' : 'none',
                 }}
                 onFocus={e => { e.target.style.borderColor = error ? '#F87171' : '#6C63FF'; e.target.style.boxShadow = error ? '0 0 0 3px rgba(248,113,113,0.15)' : '0 0 0 3px rgba(108,99,255,0.15)'; }}
-                onBlur={e => { e.target.style.borderColor = error ? '#F87171' : '#2A2A3A'; e.target.style.boxShadow = error ? '0 0 0 3px rgba(248,113,113,0.15)' : 'none'; }}
+                onBlur={e => { e.target.style.borderColor = error ? '#F87171' : 'var(--briefing-border)'; e.target.style.boxShadow = error ? '0 0 0 3px rgba(248,113,113,0.15)' : 'none'; }}
             />
             {error && <p className="text-xs" style={{ color: '#F87171' }}>⚠ {error}</p>}
         </div>

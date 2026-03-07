@@ -50,19 +50,19 @@ export default function LogoUpload({ value, onUpload, onRemove, skipped, onSkipT
                 /* Preview del logo subido */
                 <div
                     className="relative flex flex-col items-center justify-center p-6 rounded-2xl"
-                    style={{ border: '1.5px solid #6C63FF', background: '#1C1C28' }}
+                    style={{ border: '1.5px solid #6C63FF', background: 'var(--briefing-surface)' }}
                 >
                     <img
                         src={value.url}
                         alt="Logo subido"
                         className="max-h-32 max-w-full object-contain rounded"
                     />
-                    <p className="text-xs mt-3" style={{ color: '#8B8B9E' }}>{value.name}</p>
+                    <p className="text-xs mt-3" style={{ color: 'var(--briefing-text-muted)' }}>{value.name}</p>
                     <button
                         type="button"
                         onClick={onRemove}
                         className="absolute top-3 right-3 p-1.5 rounded-full transition"
-                        style={{ background: '#2A2A3A', color: '#F87171' }}
+                        style={{ background: 'var(--briefing-border)', color: '#F87171' }}
                     >
                         <X size={14} />
                     </button>
@@ -72,8 +72,8 @@ export default function LogoUpload({ value, onUpload, onRemove, skipped, onSkipT
                 <div
                     className="flex flex-col items-center justify-center gap-3 p-8 rounded-2xl cursor-pointer transition-all duration-200"
                     style={{
-                        border: `1.5px dashed ${dragging ? '#6C63FF' : '#2A2A3A'}`,
-                        background: dragging ? 'rgba(108,99,255,0.08)' : '#1C1C28',
+                        border: `1.5px dashed ${dragging ? '#6C63FF' : 'var(--briefing-border)'}`,
+                        background: dragging ? 'rgba(108,99,255,0.08)' : 'var(--briefing-surface)',
                     }}
                     onDragOver={e => { e.preventDefault(); setDragging(true); }}
                     onDragLeave={() => setDragging(false)}
@@ -82,14 +82,14 @@ export default function LogoUpload({ value, onUpload, onRemove, skipped, onSkipT
                 >
                     <Upload
                         size={36}
-                        style={{ color: dragging ? '#6C63FF' : '#8B8B9E' }}
+                        style={{ color: dragging ? '#6C63FF' : 'var(--briefing-text-muted)' }}
                         className="transition-colors"
                     />
                     <div className="text-center">
-                        <p className="font-medium mb-1" style={{ color: '#F0F0F5' }}>
+                        <p className="font-medium mb-1" style={{ color: 'var(--briefing-text)' }}>
                             {uploading ? 'Subiendo...' : 'Arrastra tu logo aquí'}
                         </p>
-                        <p className="text-sm" style={{ color: '#8B8B9E' }}>
+                        <p className="text-sm" style={{ color: 'var(--briefing-text-muted)' }}>
                             PNG, SVG, JPG o PDF · máx. 5MB
                         </p>
                     </div>
@@ -117,12 +117,12 @@ export default function LogoUpload({ value, onUpload, onRemove, skipped, onSkipT
                 onClick={onSkipToggle}
                 className="flex items-center gap-3 w-full p-4 rounded-xl transition"
                 style={{
-                    border: `1.5px solid ${skipped ? '#6C63FF' : '#2A2A3A'}`,
+                    border: `1.5px solid ${skipped ? '#6C63FF' : 'var(--briefing-border)'}`,
                     background: skipped ? 'rgba(108,99,255,0.08)' : 'transparent',
-                    color: skipped ? '#8B84FF' : '#8B8B9E',
+                    color: skipped ? '#8B84FF' : 'var(--briefing-text-muted)',
                 }}
             >
-                <CheckSquare size={18} style={{ color: skipped ? '#6C63FF' : '#2A2A3A' }} />
+                <CheckSquare size={18} style={{ color: skipped ? '#6C63FF' : 'var(--briefing-border)' }} />
                 <span className="text-sm font-medium text-left">
                     Aún no tengo logo / lo necesito como parte del proyecto
                 </span>

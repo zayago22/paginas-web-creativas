@@ -64,11 +64,11 @@ export default function Step13_Resumen({ data, onGoToStep, onSuccess }) {
                 <div className="space-y-2">
                     <h2
                         className="text-2xl font-bold"
-                        style={{ fontFamily: "'Syne', sans-serif", color: '#F0F0F5' }}
+                        style={{ fontFamily: "'Syne', sans-serif", color: 'var(--briefing-text)' }}
                     >
                         ¡Briefing enviado!
                     </h2>
-                    <p className="text-base leading-relaxed" style={{ color: '#8B8B9E', maxWidth: '360px' }}>
+                    <p className="text-base leading-relaxed" style={{ color: 'var(--briefing-text-muted)', maxWidth: '360px' }}>
                         Recibimos toda tu información. Nos pondremos en contacto contigo muy pronto — generalmente en menos de 24 horas.
                     </p>
                 </div>
@@ -100,17 +100,17 @@ export default function Step13_Resumen({ data, onGoToStep, onSuccess }) {
                     onClick={() => setConfirmed(c => !c)}
                     className="flex items-start gap-3 w-full text-left p-4 rounded-xl transition"
                     style={{
-                        border: `1.5px solid ${confirmed ? '#6C63FF' : '#2A2A3A'}`,
-                        background: confirmed ? 'rgba(108,99,255,0.08)' : '#13131A',
+                        border: `1.5px solid ${confirmed ? '#6C63FF' : 'var(--briefing-border)'}`,
+                        background: confirmed ? 'rgba(108,99,255,0.08)' : 'var(--briefing-card)',
                     }}
                 >
                     <span
                         className="w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 mt-0.5 transition"
-                        style={{ borderColor: confirmed ? '#6C63FF' : '#2A2A3A', background: confirmed ? '#6C63FF' : 'transparent' }}
+                        style={{ borderColor: confirmed ? '#6C63FF' : 'var(--briefing-border)', background: confirmed ? '#6C63FF' : 'transparent' }}
                     >
                         {confirmed && <span style={{ color: '#fff', fontSize: '11px', fontWeight: 700 }}>✓</span>}
                     </span>
-                    <p className="text-sm leading-relaxed" style={{ color: confirmed ? '#F0F0F5' : '#8B8B9E' }}>
+                    <p className="text-sm leading-relaxed" style={{ color: confirmed ? 'var(--briefing-text)' : 'var(--briefing-text-muted)' }}>
                         Confirmo que la información es correcta y autorizo a{' '}
                         <strong style={{ color: '#6C63FF' }}>paginaswebcreativas.com</strong>{' '}
                         a usarla para el desarrollo de mi proyecto.
@@ -127,7 +127,7 @@ export default function Step13_Resumen({ data, onGoToStep, onSuccess }) {
                     disabled={loading || !confirmed}
                     className="w-full flex items-center justify-center gap-3 py-4 rounded-xl font-bold text-white transition-all duration-200"
                     style={{
-                        background: confirmed && !loading ? '#6C63FF' : '#2A2A3A',
+                        background: confirmed && !loading ? '#6C63FF' : 'var(--briefing-border)',
                         boxShadow: confirmed && !loading ? '0 4px 30px rgba(108,99,255,0.4)' : 'none',
                         cursor: confirmed && !loading ? 'pointer' : 'not-allowed',
                         fontSize: '16px',

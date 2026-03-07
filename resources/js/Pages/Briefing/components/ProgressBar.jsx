@@ -1,10 +1,12 @@
+import ThemeToggle from '../../../Components/ThemeToggle';
+
 // Barra de progreso — siempre visible arriba
 export default function ProgressBar({ current, total }) {
     const pct = Math.round((current / total) * 100);
     return (
         <div
             className="fixed top-0 left-0 right-0 z-50"
-            style={{ background: '#13131A', borderBottom: '1px solid #2A2A3A' }}
+            style={{ background: 'var(--briefing-card)', borderBottom: '1px solid var(--briefing-border)' }}
             role="progressbar"
             aria-valuenow={current}
             aria-valuemin={1}
@@ -18,7 +20,7 @@ export default function ProgressBar({ current, total }) {
                 </a>
 
                 {/* Barra */}
-                <div className="flex-1 h-1.5 rounded-full" style={{ background: '#2A2A3A' }}>
+                <div className="flex-1 h-1.5 rounded-full" style={{ background: 'var(--briefing-border)' }}>
                     <div
                         className="h-1.5 rounded-full transition-all duration-500 ease-out"
                         style={{ width: `${pct}%`, background: 'linear-gradient(90deg, #6C63FF 0%, #8B84FF 100%)' }}
@@ -26,9 +28,12 @@ export default function ProgressBar({ current, total }) {
                 </div>
 
                 {/* Contador */}
-                <span className="shrink-0 text-xs font-medium" style={{ color: '#8B8B9E', minWidth: '50px', textAlign: 'right' }}>
-                    {current} <span style={{ color: '#2A2A3A' }}>/</span> <span style={{ color: '#6C63FF' }}>{total}</span>
+                <span className="shrink-0 text-xs font-medium" style={{ color: 'var(--briefing-text-muted)', minWidth: '50px', textAlign: 'right' }}>
+                    {current} <span style={{ color: 'var(--briefing-border)' }}>/</span> <span style={{ color: '#6C63FF' }}>{total}</span>
                 </span>
+
+                {/* Theme toggle */}
+                <ThemeToggle />
             </div>
         </div>
     );

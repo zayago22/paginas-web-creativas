@@ -5,7 +5,7 @@ const INDUSTRIAS = [
 
 const Textarea = ({ label, value, onChange, error, placeholder, required }) => (
     <div className="space-y-1.5">
-        <label className="block text-sm font-medium" style={{ color: '#8B8B9E' }}>
+        <label className="block text-sm font-medium" style={{ color: 'var(--briefing-text-muted)' }}>
             {label}{required && <span style={{ color: '#F87171' }}> *</span>}
         </label>
         <textarea
@@ -15,14 +15,14 @@ const Textarea = ({ label, value, onChange, error, placeholder, required }) => (
             rows={3}
             className="w-full px-4 py-3.5 rounded-xl transition-all duration-200 outline-none resize-none"
             style={{
-                background: '#1C1C28',
-                border: `1.5px solid ${error ? '#F87171' : '#2A2A3A'}`,
-                color: '#F0F0F5',
+                background: 'var(--briefing-surface)',
+                border: `1.5px solid ${error ? '#F87171' : 'var(--briefing-border)'}`,
+                color: 'var(--briefing-text)',
                 fontSize: '16px',
                 fontFamily: "'DM Sans', sans-serif",
             }}
             onFocus={e => { e.target.style.borderColor = error ? '#F87171' : '#6C63FF'; e.target.style.boxShadow = '0 0 0 3px rgba(108,99,255,0.12)'; }}
-            onBlur={e => { e.target.style.borderColor = error ? '#F87171' : '#2A2A3A'; e.target.style.boxShadow = 'none'; }}
+            onBlur={e => { e.target.style.borderColor = error ? '#F87171' : 'var(--briefing-border)'; e.target.style.boxShadow = 'none'; }}
         />
         {error && <p className="text-xs" style={{ color: '#F87171' }}>⚠ {error}</p>}
     </div>
@@ -35,7 +35,7 @@ export default function Step02_Negocio({ data, onChange, errors }) {
         <div className="space-y-5">
             {/* Select de industria */}
             <div className="space-y-1.5">
-                <label className="block text-sm font-medium" style={{ color: '#8B8B9E' }}>
+                <label className="block text-sm font-medium" style={{ color: 'var(--briefing-text-muted)' }}>
                     Industria <span style={{ color: '#F87171' }}>*</span>
                 </label>
                 <select
@@ -43,16 +43,16 @@ export default function Step02_Negocio({ data, onChange, errors }) {
                     onChange={e => update('industria')(e.target.value)}
                     className="w-full px-4 py-3.5 rounded-xl transition-all duration-200 outline-none appearance-none"
                     style={{
-                        background: '#1C1C28',
-                        border: `1.5px solid ${errors?.industria ? '#F87171' : '#2A2A3A'}`,
-                        color: data.negocio?.industria ? '#F0F0F5' : '#8B8B9E',
+                        background: 'var(--briefing-surface)',
+                        border: `1.5px solid ${errors?.industria ? '#F87171' : 'var(--briefing-border)'}`,
+                        color: data.negocio?.industria ? 'var(--briefing-text)' : 'var(--briefing-text-muted)',
                         fontSize: '16px',
                         fontFamily: "'DM Sans', sans-serif",
                     }}
                 >
                     <option value="" disabled>Selecciona tu industria</option>
                     {INDUSTRIAS.map(i => (
-                        <option key={i} value={i} style={{ background: '#1C1C28', color: '#F0F0F5' }}>{i}</option>
+                        <option key={i} value={i} style={{ background: 'var(--briefing-surface)', color: 'var(--briefing-text)' }}>{i}</option>
                     ))}
                 </select>
                 {errors?.industria && <p className="text-xs" style={{ color: '#F87171' }}>⚠ {errors.industria}</p>}

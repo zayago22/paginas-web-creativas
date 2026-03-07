@@ -13,7 +13,7 @@ export default function Step09_Audiencia({ data, onChange, errors }) {
     return (
         <div className="space-y-5">
             <div className="space-y-1.5">
-                <label className="block text-sm font-medium" style={{ color: '#8B8B9E' }}>
+                <label className="block text-sm font-medium" style={{ color: 'var(--briefing-text-muted)' }}>
                     Describe a tu cliente ideal <span style={{ color: '#F87171' }}>*</span>
                 </label>
                 <textarea
@@ -23,20 +23,20 @@ export default function Step09_Audiencia({ data, onChange, errors }) {
                     rows={4}
                     className="w-full px-4 py-3.5 rounded-xl outline-none resize-none transition"
                     style={{
-                        background: '#1C1C28',
-                        border: `1.5px solid ${errors?.descripcion ? '#F87171' : '#2A2A3A'}`,
-                        color: '#F0F0F5',
+                        background: 'var(--briefing-surface)',
+                        border: `1.5px solid ${errors?.descripcion ? '#F87171' : 'var(--briefing-border)'}`,
+                        color: 'var(--briefing-text)',
                         fontSize: '16px',
                         fontFamily: "'DM Sans', sans-serif",
                     }}
                     onFocus={e => { e.target.style.borderColor = '#6C63FF'; }}
-                    onBlur={e => { e.target.style.borderColor = errors?.descripcion ? '#F87171' : '#2A2A3A'; }}
+                    onBlur={e => { e.target.style.borderColor = errors?.descripcion ? '#F87171' : 'var(--briefing-border)'; }}
                 />
                 {errors?.descripcion && <p className="text-xs" style={{ color: '#F87171' }}>⚠ {errors.descripcion}</p>}
             </div>
 
             <div className="space-y-2">
-                <p className="text-sm font-medium" style={{ color: '#8B8B9E' }}>
+                <p className="text-sm font-medium" style={{ color: 'var(--briefing-text-muted)' }}>
                     ¿En qué idioma(s) debe estar la web? <span style={{ color: '#F87171' }}>*</span>
                 </p>
                 {errors?.idiomas && <p className="text-xs" style={{ color: '#F87171' }}>⚠ {errors.idiomas}</p>}
@@ -50,9 +50,9 @@ export default function Step09_Audiencia({ data, onChange, errors }) {
                                 onClick={() => toggleIdioma(idioma)}
                                 className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm transition"
                                 style={{
-                                    border: `1.5px solid ${checked ? '#6C63FF' : '#2A2A3A'}`,
-                                    background: checked ? 'rgba(108,99,255,0.1)' : '#1C1C28',
-                                    color: checked ? '#F0F0F5' : '#8B8B9E',
+                                    border: `1.5px solid ${checked ? '#6C63FF' : 'var(--briefing-border)'}`,
+                                    background: checked ? 'rgba(108,99,255,0.1)' : 'var(--briefing-surface)',
+                                    color: checked ? 'var(--briefing-text)' : 'var(--briefing-text-muted)',
                                 }}
                             >
                                 <span>{checked ? '☑' : '☐'}</span>

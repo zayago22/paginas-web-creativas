@@ -47,7 +47,7 @@ export default function ColorPickerModal({ colors, onChange }) {
                             className="w-14 h-14 rounded-2xl border-2 transition-all duration-200 shadow-lg"
                             style={{
                                 background: color,
-                                borderColor: activeIdx === i ? '#F0F0F5' : 'rgba(255,255,255,0.15)',
+                                borderColor: activeIdx === i ? 'var(--briefing-text)' : 'rgba(255,255,255,0.15)',
                                 transform: activeIdx === i ? 'scale(1.1)' : 'scale(1)',
                             }}
                             title={color}
@@ -69,9 +69,9 @@ export default function ColorPickerModal({ colors, onChange }) {
                         type="button"
                         onClick={addColor}
                         className="w-14 h-14 rounded-2xl flex items-center justify-center transition"
-                        style={{ border: '1.5px dashed #2A2A3A', color: '#8B8B9E' }}
+                        style={{ border: '1.5px dashed var(--briefing-border)', color: 'var(--briefing-text-muted)' }}
                         onMouseEnter={e => { e.currentTarget.style.borderColor = '#6C63FF'; e.currentTarget.style.color = '#6C63FF'; }}
-                        onMouseLeave={e => { e.currentTarget.style.borderColor = '#2A2A3A'; e.currentTarget.style.color = '#8B8B9E'; }}
+                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--briefing-border)'; e.currentTarget.style.color = 'var(--briefing-text-muted)'; }}
                     >
                         <Plus size={20} />
                     </button>
@@ -83,7 +83,7 @@ export default function ColorPickerModal({ colors, onChange }) {
                 <div
                     ref={pickerRef}
                     className="p-4 rounded-2xl"
-                    style={{ background: '#1C1C28', border: '1px solid #2A2A3A', display: 'inline-block' }}
+                    style={{ background: 'var(--briefing-surface)', border: '1px solid var(--briefing-border)', display: 'inline-block' }}
                 >
                     <HexColorPicker color={colors[activeIdx] || '#6C63FF'} onChange={updateColor} />
                     <div className="mt-3 flex items-center gap-2">
@@ -94,9 +94,9 @@ export default function ColorPickerModal({ colors, onChange }) {
                             onChange={e => updateColor(e.target.value)}
                             className="flex-1 px-3 py-1.5 rounded-lg text-sm font-mono"
                             style={{
-                                background: '#0A0A0F',
-                                border: '1px solid #2A2A3A',
-                                color: '#F0F0F5',
+                                background: 'var(--briefing-bg)',
+                                border: '1px solid var(--briefing-border)',
+                                color: 'var(--briefing-text)',
                                 fontSize: '14px',
                             }}
                         />

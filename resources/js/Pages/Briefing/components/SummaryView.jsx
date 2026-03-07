@@ -6,18 +6,18 @@ function Section({ title, icon, stepNum, onEdit, children }) {
     return (
         <div
             className="rounded-2xl overflow-hidden"
-            style={{ border: '1px solid #2A2A3A', background: '#13131A' }}
+            style={{ border: '1px solid var(--briefing-border)', background: 'var(--briefing-card)' }}
         >
             <div
                 className="flex items-center justify-between px-5 py-4 cursor-pointer"
                 onClick={() => setOpen(o => !o)}
-                style={{ borderBottom: open ? '1px solid #2A2A3A' : 'none' }}
+                style={{ borderBottom: open ? '1px solid var(--briefing-border)' : 'none' }}
             >
                 <div className="flex items-center gap-3">
                     <span className="text-sm font-bold" style={{ color: '#6C63FF', fontFamily: "'Syne', sans-serif" }}>
                         {String(stepNum).padStart(2, '0')}
                     </span>
-                    <span className="font-semibold text-sm" style={{ color: '#F0F0F5', fontFamily: "'Syne', sans-serif" }}>
+                    <span className="font-semibold text-sm" style={{ color: 'var(--briefing-text)', fontFamily: "'Syne', sans-serif" }}>
                         {title}
                     </span>
                 </div>
@@ -26,12 +26,12 @@ function Section({ title, icon, stepNum, onEdit, children }) {
                         type="button"
                         onClick={e => { e.stopPropagation(); onEdit(); }}
                         className="p-1.5 rounded-lg transition"
-                        style={{ color: '#8B8B9E', background: '#1C1C28' }}
+                        style={{ color: 'var(--briefing-text-muted)', background: 'var(--briefing-surface)' }}
                         title="Editar"
                     >
                         <Pencil size={13} />
                     </button>
-                    {open ? <ChevronUp size={16} style={{ color: '#8B8B9E' }} /> : <ChevronDown size={16} style={{ color: '#8B8B9E' }} />}
+                    {open ? <ChevronUp size={16} style={{ color: 'var(--briefing-text-muted)' }} /> : <ChevronDown size={16} style={{ color: 'var(--briefing-text-muted)' }} />}
                 </div>
             </div>
             {open && <div className="p-5 space-y-3">{children}</div>}
@@ -45,8 +45,8 @@ function Field({ label, value }) {
     if (!display.trim()) return null;
     return (
         <div>
-            <p className="text-xs font-medium mb-0.5" style={{ color: '#8B8B9E' }}>{label}</p>
-            <p className="text-sm leading-relaxed" style={{ color: '#F0F0F5' }}>{display}</p>
+            <p className="text-xs font-medium mb-0.5" style={{ color: 'var(--briefing-text-muted)' }}>{label}</p>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--briefing-text)' }}>{display}</p>
         </div>
     );
 }
@@ -71,19 +71,19 @@ export default function SummaryView({ formData, onGoToStep }) {
             <Section title="Servicios" stepNum={3} onEdit={() => onGoToStep(3)}>
                 {(d.servicios || []).map((s, i) => (
                     <div key={i}>
-                        <p className="text-sm font-semibold" style={{ color: '#F0F0F5' }}>• {s.nombre}</p>
-                        {s.descripcion && <p className="text-xs pl-3" style={{ color: '#8B8B9E' }}>{s.descripcion}</p>}
+                        <p className="text-sm font-semibold" style={{ color: 'var(--briefing-text)' }}>• {s.nombre}</p>
+                        {s.descripcion && <p className="text-xs pl-3" style={{ color: 'var(--briefing-text-muted)' }}>{s.descripcion}</p>}
                     </div>
                 ))}
             </Section>
 
             <Section title="Logo" stepNum={4} onEdit={() => onGoToStep(4)}>
                 {d.logoSkipped ? (
-                    <p className="text-sm" style={{ color: '#8B8B9E' }}>Sin logo aún — incluirlo en el proyecto</p>
+                    <p className="text-sm" style={{ color: 'var(--briefing-text-muted)' }}>Sin logo aún — incluirlo en el proyecto</p>
                 ) : d.logoUrl ? (
                     <img src={d.logoUrl} alt="Logo" className="max-h-20 object-contain rounded" />
                 ) : (
-                    <p className="text-sm" style={{ color: '#8B8B9E' }}>—</p>
+                    <p className="text-sm" style={{ color: 'var(--briefing-text-muted)' }}>—</p>
                 )}
             </Section>
 
@@ -93,12 +93,12 @@ export default function SummaryView({ formData, onGoToStep }) {
                         {d.colores.map((c, i) => (
                             <div key={i} className="flex items-center gap-2">
                                 <span className="w-6 h-6 rounded-full border border-white/10 inline-block" style={{ background: c }} />
-                                <span className="text-xs font-mono" style={{ color: '#8B8B9E' }}>{c}</span>
+                                <span className="text-xs font-mono" style={{ color: 'var(--briefing-text-muted)' }}>{c}</span>
                             </div>
                         ))}
                     </div>
                 ) : (
-                    <p className="text-sm" style={{ color: '#8B8B9E' }}>Sin colores definidos</p>
+                    <p className="text-sm" style={{ color: 'var(--briefing-text-muted)' }}>Sin colores definidos</p>
                 )}
             </Section>
 
@@ -133,17 +133,17 @@ export default function SummaryView({ formData, onGoToStep }) {
                 {(d.inspiracion || []).filter(i => i.url).map((insp, i) => (
                     <div key={i}>
                         <a href={insp.url} target="_blank" rel="noopener" className="text-sm" style={{ color: '#6C63FF' }}>{insp.url}</a>
-                        {insp.comentario && <p className="text-xs mt-0.5" style={{ color: '#8B8B9E' }}>{insp.comentario}</p>}
+                        {insp.comentario && <p className="text-xs mt-0.5" style={{ color: 'var(--briefing-text-muted)' }}>{insp.comentario}</p>}
                     </div>
                 ))}
-                {!d.inspiracion?.some(i => i.url) && <p className="text-sm" style={{ color: '#8B8B9E' }}>Sin referencias</p>}
+                {!d.inspiracion?.some(i => i.url) && <p className="text-sm" style={{ color: 'var(--briefing-text-muted)' }}>Sin referencias</p>}
             </Section>
 
             <Section title="Archivos" stepNum={11} onEdit={() => onGoToStep(11)}>
                 {(d.archivos || []).length ? (
-                    d.archivos.map((a, i) => <p key={i} className="text-sm" style={{ color: '#F0F0F5' }}>📎 {a.name}</p>)
+                    d.archivos.map((a, i) => <p key={i} className="text-sm" style={{ color: 'var(--briefing-text)' }}>📎 {a.name}</p>)
                 ) : (
-                    <p className="text-sm" style={{ color: '#8B8B9E' }}>Sin archivos</p>
+                    <p className="text-sm" style={{ color: 'var(--briefing-text-muted)' }}>Sin archivos</p>
                 )}
             </Section>
 

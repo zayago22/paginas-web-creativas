@@ -1,9 +1,9 @@
 import { Plus, Trash2 } from 'lucide-react';
 
 const inputBase = {
-    background: '#1C1C28',
-    border: '1.5px solid #2A2A3A',
-    color: '#F0F0F5',
+    background: 'var(--briefing-surface)',
+    border: '1.5px solid var(--briefing-border)',
+    color: 'var(--briefing-text)',
     fontSize: '16px',
     fontFamily: "'DM Sans', sans-serif",
 };
@@ -28,7 +28,7 @@ export default function Step10_Inspiracion({ data, onChange, onSkip }) {
 
     return (
         <div className="space-y-4">
-            <p className="text-sm" style={{ color: '#8B8B9E' }}>
+            <p className="text-sm" style={{ color: 'var(--briefing-text-muted)' }}>
                 No tienen que ser de tu industria — solo webs cuyo diseño te inspire.
             </p>
 
@@ -36,7 +36,7 @@ export default function Step10_Inspiracion({ data, onChange, onSkip }) {
                 <div
                     key={idx}
                     className="p-4 rounded-2xl space-y-3"
-                    style={{ background: '#13131A', border: '1px solid #2A2A3A' }}
+                    style={{ background: 'var(--briefing-card)', border: '1px solid var(--briefing-border)' }}
                 >
                     <div className="flex items-center justify-between">
                         <span className="text-xs font-semibold" style={{ color: '#6C63FF', fontFamily: "'Syne', sans-serif" }}>
@@ -57,7 +57,7 @@ export default function Step10_Inspiracion({ data, onChange, onSkip }) {
                         className="w-full px-4 py-3 rounded-xl outline-none transition"
                         style={inputBase}
                         onFocus={e => { e.target.style.borderColor = '#6C63FF'; }}
-                        onBlur={e => { e.target.style.borderColor = '#2A2A3A'; }}
+                        onBlur={e => { e.target.style.borderColor = 'var(--briefing-border)'; }}
                     />
                     <textarea
                         value={item.comentario}
@@ -67,7 +67,7 @@ export default function Step10_Inspiracion({ data, onChange, onSkip }) {
                         className="w-full px-4 py-3 rounded-xl outline-none resize-none transition"
                         style={inputBase}
                         onFocus={e => { e.target.style.borderColor = '#6C63FF'; }}
-                        onBlur={e => { e.target.style.borderColor = '#2A2A3A'; }}
+                        onBlur={e => { e.target.style.borderColor = 'var(--briefing-border)'; }}
                     />
                 </div>
             ))}
@@ -75,9 +75,9 @@ export default function Step10_Inspiracion({ data, onChange, onSkip }) {
             {inspiracion.length < 3 && (
                 <button type="button" onClick={add}
                     className="flex items-center gap-2 w-full justify-center py-3 rounded-xl text-sm transition"
-                    style={{ border: '1.5px dashed #2A2A3A', color: '#8B8B9E' }}
+                    style={{ border: '1.5px dashed var(--briefing-border)', color: 'var(--briefing-text-muted)' }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = '#6C63FF'; e.currentTarget.style.color = '#6C63FF'; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#2A2A3A'; e.currentTarget.style.color = '#8B8B9E'; }}>
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--briefing-border)'; e.currentTarget.style.color = 'var(--briefing-text-muted)'; }}>
                     <Plus size={16} /> Agregar otra web
                 </button>
             )}

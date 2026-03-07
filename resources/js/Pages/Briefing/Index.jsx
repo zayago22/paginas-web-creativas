@@ -128,15 +128,15 @@ export default function BriefingIndex({ meta }) {
                 >
                     <div
                         className="max-w-sm w-full p-6 rounded-2xl space-y-4"
-                        style={{ background: '#13131A', border: '1px solid #2A2A3A' }}
+                        style={{ background: 'var(--briefing-card)', border: '1px solid var(--briefing-border)' }}
                     >
                         <p
                             className="text-lg font-bold"
-                            style={{ fontFamily: "'Syne', sans-serif", color: '#F0F0F5' }}
+                            style={{ fontFamily: "'Syne', sans-serif", color: 'var(--briefing-text)' }}
                         >
                             ¿Continuar donde lo dejaste?
                         </p>
-                        <p className="text-sm" style={{ color: '#8B8B9E' }}>
+                        <p className="text-sm" style={{ color: 'var(--briefing-text-muted)' }}>
                             Encontramos un formulario que no terminaste. ¿Quieres continuar?
                         </p>
                         <div className="flex gap-3">
@@ -160,7 +160,7 @@ export default function BriefingIndex({ meta }) {
                                     setShowResumeModal(false);
                                 }}
                                 className="flex-1 py-3 rounded-xl font-semibold text-sm transition"
-                                style={{ border: '1px solid #2A2A3A', color: '#8B8B9E' }}
+                                style={{ border: '1px solid var(--briefing-border)', color: 'var(--briefing-text-muted)' }}
                             >
                                 Empezar de nuevo
                             </button>
@@ -190,12 +190,12 @@ export default function BriefingIndex({ meta }) {
                                         id="step-title"
                                         tabIndex={-1}
                                         className="text-2xl md:text-3xl font-black leading-tight outline-none"
-                                        style={{ fontFamily: "'Syne', sans-serif", color: '#F0F0F5' }}
+                                        style={{ fontFamily: "'Syne', sans-serif", color: 'var(--briefing-text)' }}
                                     >
                                         {currentStepConfig.subtitle}
                                     </h1>
                                     {currentStepConfig.optional && currentStep !== 13 && (
-                                        <p className="text-sm mt-2" style={{ color: '#4A4A5A' }}>
+                                        <p className="text-sm mt-2" style={{ color: 'var(--briefing-text-dim)' }}>
                                             Este paso es opcional — puedes saltarlo si no aplica.
                                         </p>
                                     )}
@@ -205,8 +205,8 @@ export default function BriefingIndex({ meta }) {
                                 <div
                                     className="p-6 md:p-8 rounded-3xl"
                                     style={{
-                                        background: '#13131A',
-                                        border: '1px solid #2A2A3A',
+                                        background: 'var(--briefing-card)',
+                                        border: '1px solid var(--briefing-border)',
                                         boxShadow: '0 0 40px rgba(108,99,255,0.08)',
                                     }}
                                 >
