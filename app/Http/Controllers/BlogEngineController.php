@@ -16,6 +16,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class BlogEngineController extends Controller
 {
@@ -41,6 +42,9 @@ class BlogEngineController extends Controller
             $posts = [];
         }
 
+        // Rewrite image URLs to serve from this domain
+        $posts = array_map(fn($p) => $this->rewritePostImages($p), $posts);
+
         $meta = [
             'title'       => 'Blog de Desarrollo Web | Laravel, React y SEO | Páginas Web Creativas',
             'description' => 'Artículos sobre desarrollo web, Laravel, React, Inertia.js, SEO y marketing digital. Aprende a crear sitios web profesionales con Páginas Web Creativas.',
@@ -63,14 +67,45 @@ class BlogEngineController extends Controller
             abort(404);
         }
 
+        // If the API returned a different slug (301 redirect from old slug),
+        // redirect the user to the canonical URL
+        if (!empty($post['slug']) && $post['slug'] !== $slug) {
+            return redirect('/blog/' . $post['slug'], 301);
+        }
+
+        // Rewrite image URLs to serve from this domain
+        $post = $this->rewritePostImages($post);
+
         $canonical = 'https://paginaswebcreativas.com/blog/' . $slug;
 
+        // Build title: strip pipe from AI title, then apply 50-char threshold
+        $rawTitle = $post['titulo'] ?? 'Artículo';
+        $siteName = 'Páginas Web Creativas';
+        if (($pipePos = mb_strpos($rawTitle, ' | ')) !== false) {
+            $rawTitle = mb_substr($rawTitle, 0, $pipePos);
+        }
+        $rawTitle = trim($rawTitle);
+        if (mb_strlen($rawTitle) <= 50) {
+            $fullTitle = $rawTitle . ' | ' . $siteName;
+        } else {
+            $words = explode(' ', $rawTitle);
+            $truncated = '';
+            foreach ($words as $w) {
+                $test = $truncated === '' ? $w : $truncated . ' ' . $w;
+                if (mb_strlen($test) > 47) break;
+                $truncated = $test;
+            }
+            $fullTitle = ($truncated ?: mb_substr($rawTitle, 0, 47)) . '... | ' . $siteName;
+        }
+
         $meta = [
-            'title'        => ($post['titulo'] ?? 'Artículo') . ' | Páginas Web Creativas',
+            'title'        => $fullTitle,
             'description'  => $post['meta_description'] ?? $post['extracto'] ?? '',
             'canonical'    => $canonical,
             'og_type'      => 'article',
-            'og_image'     => $post['imagen_destacada_url'] ?? asset('images/og-paginaswebcreativas.jpg'),
+            'og_image'     => !empty($post['imagen_destacada_url'])
+                ? url($post['imagen_destacada_url'])
+                : asset('images/og-paginaswebcreativas.jpg'),
             'og_image_alt' => $post['imagen_destacada_alt'] ?? ($post['titulo'] ?? ''),
             'keywords'     => $post['keyword'] ?? '',
             'date'         => $post['fecha_publicado'] ?? '',
@@ -187,11 +222,111 @@ class BlogEngineController extends Controller
     }
 
     // ---------------------------------------------------------------
+    // Proxy images from BlogEngine so they appear served from this domain
+    // /blog/uploads/xxx.webp → fetches from blogengineseo.com/uploads/xxx.webp
+    // ---------------------------------------------------------------
+    public function proxyImage(string $path)
+    {
+        $remoteUrl = rtrim($this->apiUrl, '/') . '/uploads/' . $path;
+
+        $cacheKey = 'blog_img_' . md5($path);
+        $cacheDuration = 60 * 60 * 24 * 7; // 7 days
+
+        $imageData = Cache::remember($cacheKey, $cacheDuration, function () use ($remoteUrl) {
+            try {
+                $response = Http::timeout(15)->get($remoteUrl);
+                if ($response->successful()) {
+                    return [
+                        'body' => base64_encode($response->body()),
+                        'content_type' => $response->header('Content-Type') ?? 'image/webp',
+                    ];
+                }
+            } catch (\Exception $e) {
+                Log::warning("Blog image proxy failed: {$e->getMessage()}");
+            }
+            return null;
+        });
+
+        if (!$imageData) {
+            abort(404);
+        }
+
+        return response(base64_decode($imageData['body']))
+            ->header('Content-Type', $imageData['content_type'])
+            ->header('Cache-Control', 'public, max-age=31536000, immutable');
+    }
+
+    // ---------------------------------------------------------------
+    // Rewrite image URLs in a post to serve from this domain
+    // ---------------------------------------------------------------
+    private function rewritePostImages(array $post): array
+    {
+        // Rewrite featured image
+        if (!empty($post['imagen_destacada_url'])) {
+            $post['imagen_destacada_url'] = $this->rewriteImageUrl($post['imagen_destacada_url']);
+        }
+
+        // Rewrite images in HTML content
+        if (!empty($post['contenido_html'])) {
+            $post['contenido_html'] = $this->rewriteContentImages($post['contenido_html']);
+        }
+
+        return $post;
+    }
+
+    /**
+     * Rewrite a single image URL:
+     * blogengineseo.com/uploads/xxx.webp → /blog/uploads/xxx.webp
+     * /b/slug/uploads/xxx.webp            → /blog/uploads/xxx.webp
+     */
+    private function rewriteImageUrl(string $url): string
+    {
+        if (empty($url)) return $url;
+
+        // Absolute URL from blogengineseo.com
+        if (preg_match('#https?://[^/]*blogengineseo\.com/uploads/(.+)#i', $url, $m)) {
+            return '/blog/uploads/' . $m[1];
+        }
+
+        // Relative path: /b/{slug}/uploads/xxx
+        if (preg_match('#^/b/[^/]+/uploads/(.+)#', $url, $m)) {
+            return '/blog/uploads/' . $m[1];
+        }
+
+        return $url;
+    }
+
+    /**
+     * Rewrite all image URLs inside HTML content.
+     */
+    private function rewriteContentImages(string $html): string
+    {
+        if (empty($html)) return $html;
+
+        // Rewrite src="https://blogengineseo.com/uploads/..."
+        $html = preg_replace(
+            '#(src=["\'])https?://[^/]*blogengineseo\.com/uploads/([^"\'>]+)#i',
+            '$1/blog/uploads/$2',
+            $html
+        );
+
+        // Rewrite src="/b/{slug}/uploads/..."
+        $html = preg_replace(
+            '#(src=["\'])/b/[^/]+/uploads/([^"\'>]+)#',
+            '$1/blog/uploads/$2',
+            $html
+        );
+
+        return $html;
+    }
+
+    // ---------------------------------------------------------------
     // Fetch con cache — nunca cachea respuestas vacías / null
     // ---------------------------------------------------------------
     private function fetch(string $endpoint): ?array
     {
-        $cacheKey = 'blogengine_pwc_' . md5($endpoint);
+        // v2: bump version to invalidate old cached data with external image URLs
+        $cacheKey = 'blogengine_v2_' . md5($endpoint);
 
         try {
             // Intentamos leer de caché primero

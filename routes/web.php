@@ -61,7 +61,28 @@ Route::get('/portafolio/{slug}', [PageController::class, 'project'])->name('proj
 Route::get('/blog',              [BlogEngineController::class, 'index'])->name('blog.index');
 Route::get('/blog/sitemap.xml',  [BlogEngineController::class, 'sitemap'])->name('blog.sitemap');
 Route::get('/blog/rss.xml',      [BlogEngineController::class, 'rss'])->name('blog.rss');
+Route::get('/blog/uploads/{path}', [BlogEngineController::class, 'proxyImage'])->where('path', '.*')->name('blog.proxy-image');
 Route::get('/blog/{slug}',       [BlogEngineController::class, 'show'])->name('blog.show');
+
+// Fallback proxy: /b/{client}/uploads/{path} → blogengineseo.com/uploads/{path}
+Route::get('/b/{client}/uploads/{path}', function (string $client, string $path) {
+    $apiUrl = rtrim(config('services.blogengine.url', 'https://blogengineseo.com'), '/');
+    $remoteUrl = $apiUrl . '/uploads/' . $path;
+    $cacheKey = 'blog_img_' . md5($path);
+    $imageData = \Illuminate\Support\Facades\Cache::remember($cacheKey, 604800, function () use ($remoteUrl) {
+        try {
+            $resp = \Illuminate\Support\Facades\Http::timeout(15)->get($remoteUrl);
+            if ($resp->successful()) {
+                return ['body' => base64_encode($resp->body()), 'ct' => $resp->header('Content-Type') ?? 'image/webp'];
+            }
+        } catch (\Exception $e) {}
+        return null;
+    });
+    if (!$imageData) abort(404);
+    return response(base64_decode($imageData['body']))
+        ->header('Content-Type', $imageData['ct'])
+        ->header('Cache-Control', 'public, max-age=31536000, immutable');
+})->where('path', '.*');
 
 // Servicios
 Route::get('/servicios', [ServiciosController::class, 'index'])->name('servicios.index');
