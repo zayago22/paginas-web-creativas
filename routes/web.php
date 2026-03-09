@@ -59,6 +59,7 @@ Route::get('/portafolio/{slug}', [PageController::class, 'project'])->name('proj
 // Blog — powered by BlogEngine (server-side rendered, SEO-first)
 // sitemap y rss ANTES de {slug} para evitar conflicto de parámetros
 Route::get('/blog',              [BlogEngineController::class, 'index'])->name('blog.index');
+Route::get('/blog/cache-clear',  [BlogEngineController::class, 'clearCache'])->name('blog.cache-clear');
 Route::get('/blog/sitemap.xml',  [BlogEngineController::class, 'sitemap'])->name('blog.sitemap');
 Route::get('/blog/rss.xml',      [BlogEngineController::class, 'rss'])->name('blog.rss');
 Route::get('/blog/uploads/{path}', [BlogEngineController::class, 'proxyImage'])->where('path', '.*')->name('blog.proxy-image');

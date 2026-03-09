@@ -321,6 +321,27 @@ class BlogEngineController extends Controller
     }
 
     // ---------------------------------------------------------------
+    // GET /blog/cache-clear  →  limpia caché del blog
+    // ---------------------------------------------------------------
+    public function clearCache()
+    {
+        $keys = [
+            'blogengine_v2_' . md5("/api/public/{$this->blogSlug}/posts?limit=20"),
+            'blogengine_v2_' . md5("/api/public/{$this->blogSlug}/posts?limit=200"),
+            'blogengine_pwc_' . md5("/api/public/{$this->blogSlug}/posts?limit=20"),
+            'blogengine_pwc_' . md5("/api/public/{$this->blogSlug}/posts?limit=200"),
+            'sitemap_blogengine_posts',
+        ];
+
+        foreach ($keys as $key) {
+            Cache::forget($key);
+        }
+
+        // Also clear image cache (all blog_img_* keys) by flushing tagged or just redirecting
+        return redirect('/blog')->with('message', 'Blog cache cleared');
+    }
+
+    // ---------------------------------------------------------------
     // Fetch con cache — nunca cachea respuestas vacías / null
     // ---------------------------------------------------------------
     private function fetch(string $endpoint): ?array
